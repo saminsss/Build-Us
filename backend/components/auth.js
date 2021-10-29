@@ -3,15 +3,13 @@ require("dotenv").config();
 const pool = require('./db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const axios = require('axios');
+const authController = require('../controllers/authentications');
 
 const userTableName = "USERS";
-const authTableName = "AUTHENTICATION"
 
 const signInRoutes = ["/auth/signin"];
 const signOutRoutes = ["/auth/signout"];
 const signUpRoutes = ["/auth/signup"];
-const tokenRoutes = ["/auth/token"];
 const refreshRoutes = ["/auth/refresh"];
 
 function generateAccessToken(id) {
@@ -39,37 +37,41 @@ const authenticate = (app) => {
 	app.post(signInRoutes, async (req, res) => {
 		try {
 			const { email, password } = req.body;
-			var sql = "SELECT * FROM " + userTableName + " WHERE EMAIL = $1";
-			var sqlData = [email];
+			let sql = "SELECT * FROM " + userTableName + " WHERE EMAIL = $1";
+			let sqlData = [email];
 
 			console.log(sql, sqlData);
 			const users = await pool.query(sql, sqlData);
+			const user = users.rows[0];
 
-			var info = {};
-			info.id = users.rows[0].id;
-			const isValidPassword = await bcrypt.compare(password, users.rows[0].password);
-			if (!isValidPassword) {
-				info.route = '/signin';
-				info.msg = "error";
-				res.status(403).json(info);
-				return;
+			let info = {};
+
+			if (!user) {
+				info.msg = "invalidemail";
+				return res.json(info);
 			}
 
-			const id = { id: users.rows[0].id };
+			info.id = user.id;
+			const isValidPassword = await bcrypt.compare(password, user.password);
+			if (!isValidPassword) {
+				info.msg = "invalidpassword";
+				return res.json(info);
+			}
+
+			const id = { id: user.id };
 			const accessToken = generateAccessToken(id);
 			const refreshToken = generateRefreshToken(id);
-			const refreshRes = await axios.post('http://localhost:5000/auth/token', {
-				token: refreshToken
-			});
+			const refreshRes = await authController.insertToken(refreshToken);
 
-			if (refreshRes.data.msg == "success") {
+			if (refreshRes.msg == "success") {
 				info.route = '/customers';
 				info.msg = "success";
 				info.accessToken = accessToken;
 				info.refreshToken = refreshToken;
+				return res.json(info);
 			}
 
-			res.status(200).json(info);
+			res.status(404).json(info);
 		} catch (error) {
 			console.log(error);
 			res.status(401).json({ msg: "error" });
@@ -79,16 +81,16 @@ const authenticate = (app) => {
 	//signup
 	app.post(signUpRoutes, async (req, res) => {
 		try {
-			var sql = "INSERT INTO " + userTableName + " ("
-			var sqlValues = "VALUES ("
-			var param = 1;
-			var sqlData = [];
+			let sql = "INSERT INTO " + userTableName + " ("
+			let sqlValues = "VALUES ("
+			let param = 1;
+			let sqlData = [];
 
 			if (req.body.password != null) {
 				const hashedPassword = await bcrypt.hash(req.body.password, 10);
 				req.body.password = hashedPassword;
 			}
-			var json = req.body;
+			let json = req.body;
 			for (key in json) {
 				sql += key.toUpperCase() + ", ";
 				sqlValues += '$' + param++ + ", ";
@@ -104,7 +106,7 @@ const authenticate = (app) => {
 			res.status(200).json(newuser.rows[0]);
 		} catch (error) {
 			console.log("JSON Data not correctly formatted");
-			res.status(401).json({ error: error, msg: "error" });
+			res.status(401).json({ msg: "error" });
 		}
 	});
 
@@ -112,11 +114,7 @@ const authenticate = (app) => {
 	app.post(signOutRoutes, authenticateToken, async (req, res) => {
 		try {
 			const refreshToken = req.body.token;
-			const deleted = await axios.delete('http://localhost:5000/auth/token', {
-				data: {
-					token: refreshToken
-				}
-			});
+			const deleted = await authController.deleteToken(refreshToken);
 			if (deleted.msg != "success") return res.status(401).json({ msg: "error" });
 
 			res.status(200).json({
@@ -128,84 +126,27 @@ const authenticate = (app) => {
 		}
 	});
 
-	app.post(tokenRoutes, async (req, res) => {
-		try {
-			//TODO insert user to authentication table
-			var sql = "INSERT INTO " + authTableName + " (TOKEN) VALUES ($1) RETURNING *";
-			var sqlData = [req.body.token];
-			const newtoken = await pool.query(sql, sqlData);
-			res.status(200).json({
-				token: newtoken.rows,
-				msg: 'success'
-			});
-		} catch (error) {
-			console.log("JSON Data not correctly formatted");
-			res.status(401).json({ error: error, msg: "error" });
-		}
-	});
-
-	app.get(tokenRoutes, async (req, res) => {
-		try {
-			var sql = "SELECT TOKEN FROM " + authTableName + " WHERE TOKEN = $1";
-			var sqlData = [req.body.token];
-			const token = await pool.query(sql, sqlData);
-			if (token.rows.length == 0) return res.json({
-				token: null,
-				msg: 'error'
-			});
-			res.status(200).json({
-				token: token.rows[0],
-				msg: 'success'
-			});
-		} catch (error) {
-			console.log("JSON Data not correctly formatted");
-			res.status(401).json({ error: error, msg: "error" });
-		}
-	});
-
-	app.delete(tokenRoutes, async (req, res) => {
-		try {
-			var sql = "DELETE FROM " + authTableName + " WHERE TOKEN = $1";
-			var sqlData = [req.body.token];
-			const token = await pool.query(sql, sqlData);
-			res.status(200).json({
-				msg: "success"
-			});
-		} catch (error) {
-			console.log("JSON Data not correctly formatted");
-			res.status(401).json({ error: error, msg: "error" });
-		}
-	});
-
+	//refresh tokens
 	app.post(refreshRoutes, async (req, res) => {
 		try {
 			const refreshToken = req.body.token;
 			if (!refreshToken) return res.status(401).json({ msg: "error" });
 
-			const token = await axios.get('http://localhost:5000/auth/token', {
-				data: {
-					token: refreshToken
-				}
-			});
+			const token = await authController.getToken(refreshToken);
 
-			if (!token.data.token) return res.status(403).json({ msg: "error" });
+			if (token.msg != 'success') return res.status(403).json({ msg: "error" });
 
 			jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
 				if (err) return res.status(403).json({ msg: "error" });
-				const deleted = await axios.delete('http://localhost:5000/auth/token', {
-					data: {
-						token: refreshToken
-					}
-				});
+				const deleted = await authController.deleteToken(refreshToken);
 
-				if (deleted.data.msg != "success") return res.status(401).json({ msg: "error" });
+				if (deleted.msg != "success") return res.status(401).json({ msg: "error" });
 
 				const id = { id: user.id };
 				const newAccessToken = generateAccessToken(id);
 				const newRefreshToken = generateRefreshToken(id);
-				const refreshRes = await axios.post('http://localhost:5000/auth/token', {
-					token: newRefreshToken
-				});
+				const refreshRes = await authController.insertToken(newRefreshToken);
+
 				res.status(200).json({
 					accessToken: newAccessToken,
 					refreshToken: newRefreshToken

@@ -2,35 +2,31 @@ require("dotenv").config();
 
 const pool = require("../components/db");
 const bcrypt = require("bcrypt");
-const { authenticate, authenticateToken } = require("../components/auth");
-const cookie = require('js-cookie');
+const { authenticateToken } = require("../components/auth");
 
 const tableName = "USERS";
 
 //routes
-const insertRoutes = ["/users"];
-const selectRoutes = ["/users"];
-const updateRoutes = ["/users"];
-const deleteRoutes = ["/users"];
+const insertRoutes = ["/users/:id"];
+const selectRoutes = ["/users/:id"];
+const updateRoutes = ["/users/:id"];
+const deleteRoutes = ["/users/:id"];
 
 const users = (app) => {
-	//authentication routes
-	authenticate(app);
-
 	//insert a user
 	app.post(insertRoutes, authenticateToken, async (req, res) => {
-		if (req.id != req.query.id) return res.status(403).json({ msg: "error" });
+		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
-			var sql = "INSERT INTO " + tableName + " ("
-			var sqlValues = "VALUES ("
-			var param = 1;
-			var sqlData = [];
+			let sql = "INSERT INTO " + tableName + " ("
+			let sqlValues = "VALUES ("
+			let param = 1;
+			let sqlData = [];
 
 			if (req.body.password != null) {
 				const hashedPassword = await bcrypt.hash(req.body.password, 10);
 				req.body.password = hashedPassword;
 			}
-			var json = req.body;
+			let json = req.body;
 			for (key in json) {
 				sql += key.toUpperCase() + ", ";
 				sqlValues += '$' + param++ + ", ";
@@ -52,16 +48,15 @@ const users = (app) => {
 
 	//get users
 	app.get(selectRoutes, authenticateToken, async (req, res) => {
-		//if (req.id != req.query.id) return res.status(403).json({ msg: "error" });
-		if (req.id != cookie.get('id')) return res.status(403).json({ msg: "error" });
+		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
-			var sql = "SELECT * FROM " + tableName + " ";
-			var sqlData = [];
-			var param = 1;
+			let sql = "SELECT * FROM " + tableName + " ";
+			let sqlData = [];
+			let param = 1;
 
-			const json = req.body;
+			const json = req.query;
 			if (Object.keys(json) != 0) {
-				var whereClause = "WHERE ";
+				let whereClause = "WHERE ";
 				for (key in json) {
 					if (!json[key] || key == "password") continue;
 					whereClause += key.toUpperCase() + " = $" + param++ + " AND ";
@@ -84,17 +79,17 @@ const users = (app) => {
 
 	//update a user
 	app.put(updateRoutes, authenticateToken, async (req, res) => {
-		if (req.id != req.query.id) return res.status(403).json({ msg: "error" });
+		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
-			var sql = "UPDATE " + tableName + " SET ";
-			var sqlData = [];
-			var param = 1;
+			let sql = "UPDATE " + tableName + " SET ";
+			let sqlData = [];
+			let param = 1;
 
 			if (req.body.password != null) {
 				const hashedPassword = await bcrypt.hash(req.body.password, 10);
 				req.body.password = hashedPassword;
 			}
-			var json = req.body;
+			let json = req.body;
 			for (key in json) {
 				sql += key.toUpperCase() + " = $" + param++ + ", ";
 				sqlData.push(json[key])
@@ -103,7 +98,7 @@ const users = (app) => {
 
 			json = req.query;
 			if (Object.keys(json) != 0) {
-				var whereClause = "WHERE ";
+				let whereClause = "WHERE ";
 				for (key in json) {
 					if (json[key] == null || key == "password") continue;
 					whereClause += key.toUpperCase() + " = $" + param++ + " AND ";
@@ -124,14 +119,14 @@ const users = (app) => {
 
 	//delete a user
 	app.delete(deleteRoutes, authenticateToken, async (req, res) => {
-		if (req.id != req.query.id) return res.status(403).json({ msg: "error" });
+		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
-			var sql = "DELETE FROM " + tableName + " ";
-			var sqlData = [];
-			var param = 1;
+			let sql = "DELETE FROM " + tableName + " ";
+			let sqlData = [];
+			let param = 1;
 
-			var json = req.body;
-			var whereClause = "WHERE ";
+			let json = req.body;
+			let whereClause = "WHERE ";
 			if (Object.keys(json) != 0) {
 				for (key in json) {
 					if (json[key] == null || key == "password") continue;

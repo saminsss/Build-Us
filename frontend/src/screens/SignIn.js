@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Axios from 'axios';
-import Cookies from 'js-cookie';
+import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,9 +12,11 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-//import newcookie from '../components/Cookie';
+import Cookies from '../components/Cookie';
 
-function Copyright(props) {
+const Axios = axios.create();
+
+const Copyright = (props) => {
 	return (
 		<Typography variant="body2" color="text.secondary" align="center" {...props}>
 			{'Copyright © '}
@@ -30,22 +31,17 @@ function Copyright(props) {
 
 const SignIn = (props) => {
 	const [email, setEmail] = useState('');
-	const [emailError, setEmailError] = useState(false);
+	const [emailError, setEmailError] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordError, setPasswordError] = useState(false);
 	const [remember, setRemember] = useState(false);
 
 	const handleSubmit = async (event) => {
 
-		var cookie = Cookies.withAttributes({ sameSite: 'strict' });
+		let cookie = Cookies(remember);
 
 		try {
-			if (remember) {
-				cookie = Cookies.withAttributes({ expires: 15, sameSite: 'strict' });
-				cookie.set('remember', 'true');
-			} else {
-				cookie.set('remember', 'false');
-			}
+			cookie.set('remember', remember);
 			event.preventDefault();
 
 			if (errorsExist(email, password)) return;
@@ -55,39 +51,52 @@ const SignIn = (props) => {
 				password: password
 			});
 
+			if (res.data.msg === "invalidemail") {
+				setEmailError('Email invalid');
+				return;
+			}
+			if (res.data.msg === "invalidpassword") {
+				setPasswordError('Password invalid');
+				return;
+			}
+
 			cookie.set('id', res.data.id);
 			cookie.set('accessToken', res.data.accessToken);
 			cookie.set('refreshToken', res.data.refreshToken);
 
-			//var hey = newcookie(remember);
-
-			props.history.push(res.data.route);
+			if (res.data.msg === "success") {
+				props.history.push(res.data.route);
+			}
+			else {
+				setEmailError('Something went wrong. Please re-enter email');
+				setPasswordError('Something went wrong. Please re-enter password');
+			}
 		} catch (err) {
 			console.log(err);
 		}
 	}
 
 	const errorsExist = (email, password) => {
-		var error = false;
+		let error = false;
 		if (!validEmail(email)) {
-			setEmailError(true);
+			setEmailError('Email address not valid');
 			error = true;
 		} else {
-			setEmailError(false);
+			setEmailError('');
 		}
 
 		if (!validPassword(password)) {
-			setPasswordError(true);
+			setPasswordError('Password is not valid');
 			error = true;
 		} else {
-			setPasswordError(false);
+			setPasswordError('');
 		}
 
 		return error;
 	}
 
 	const validEmail = (email) => {
-		return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+		return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 	}
 
 	const validPassword = (password) => {
@@ -110,8 +119,8 @@ const SignIn = (props) => {
 				overflow: 'auto'
 			}}
 		>
+			<CssBaseline />
 			<Container component="main" maxWidth="xs">
-				<CssBaseline />
 				<Box
 					sx={{
 						marginTop: 8,
@@ -132,8 +141,8 @@ const SignIn = (props) => {
 							name="email"
 							type="email"
 							margin="normal"
-							error={emailError}
-							helperText={emailError ? "Email address not valid" : ""}
+							error={emailError ? true : false}
+							helperText={emailError}
 							required
 							fullWidth
 							autoComplete="email"
@@ -146,8 +155,8 @@ const SignIn = (props) => {
 							name="password"
 							type="password"
 							margin="normal"
-							error={passwordError}
-							helperText={passwordError ? "Password cannot be less than 3 characters" : ""}
+							error={passwordError ? true : false}
+							helperText={passwordError}
 							required
 							fullWidth
 							autoComplete="current-password"

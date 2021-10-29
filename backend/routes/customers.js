@@ -1,28 +1,25 @@
 const pool = require("../components/db");
-const { authenticate, authenticateToken } = require("../components/auth");
+const { authenticateToken } = require("../components/auth");
 
 const tableName = "CUSTOMERS";
 
 //routes
-const insertRoutes = ["/customers/:userId"];
-const selectRoutes = ["/customers/:userid"];
-const updateRoutes = ["/customers/:userId"];
-const deleteRoutes = ["/customers/:userId"];
+const insertRoutes = ["/customers/:id"];
+const selectRoutes = ["/customers/:id"];
+const updateRoutes = ["/customers/:id"];
+const deleteRoutes = ["/customers/:id"];
 
 const customers = (app) => {
-	//authentications routes acting as middleware
-	authenticate(app);
-
 	//insert a customer
 	app.post(insertRoutes, authenticateToken, async (req, res) => {
-		if (req.id != req.params.userid) return res.status(403).json({ msg: "error" });
+		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
-			var sql = "INSERT INTO " + tableName + " ("
-			var sqlValues = "VALUES ("
-			var param = 1;
-			var sqlData = [];
+			let sql = "INSERT INTO " + tableName + " ("
+			let sqlValues = "VALUES ("
+			let param = 1;
+			let sqlData = [];
 
-			var json = req.body;
+			let json = req.body;
 			for (key in json) {
 				sql += key.toUpperCase() + ", ";
 				sqlValues += '$' + param++ + ", ";
@@ -44,15 +41,15 @@ const customers = (app) => {
 
 	//get customers
 	app.get(selectRoutes, authenticateToken, async (req, res) => {
-		if (req.id != req.params.userid) return res.status(403).json({ msg: "error" });
+		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
-			var sql = "SELECT * FROM " + tableName + " ";
-			var sqlData = [];
-			var param = 1;
+			let sql = "SELECT * FROM " + tableName + " ";
+			let sqlData = [];
+			let param = 1;
 
-			var json = req.query;
+			let json = req.query;
 			if (Object.keys(json) != 0) {
-				var whereClause = "WHERE ";
+				let whereClause = "WHERE ";
 				for (key in json) {
 					if (json[key] == null) continue;
 					whereClause += key.toUpperCase() + " = $" + param++ + " AND ";
@@ -73,13 +70,13 @@ const customers = (app) => {
 
 	//update a customer
 	app.put(updateRoutes, authenticateToken, async (req, res) => {
-		if (req.id != req.params.userid) return res.status(403).json({ msg: "error" });
+		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
-			var sql = "UPDATE " + tableName + " SET ";
-			var sqlData = [];
-			var param = 1;
+			let sql = "UPDATE " + tableName + " SET ";
+			let sqlData = [];
+			let param = 1;
 
-			var json = req.query;
+			let json = req.query;
 			for (key in json) {
 				sql += key.toUpperCase() + " = $" + param++ + ", ";
 				sqlData.push(json[key])
@@ -88,7 +85,7 @@ const customers = (app) => {
 
 			json = req.query;
 			if (Object.keys(json) != 0) {
-				var whereClause = "WHERE ";
+				let whereClause = "WHERE ";
 				for (key in json) {
 					if (json[key] == null) continue;
 					whereClause += key.toUpperCase() + " = $" + param++ + " AND ";
@@ -109,14 +106,14 @@ const customers = (app) => {
 
 	//delete a customer
 	app.delete(deleteRoutes, authenticateToken, async (req, res) => {
-		if (req.id != req.params.userid) return res.status(403).json({ msg: "error" });
+		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
-			var sql = "DELETE FROM " + tableName + " ";
-			var sqlData = [];
-			var param = 1;
+			let sql = "DELETE FROM " + tableName + " ";
+			let sqlData = [];
+			let param = 1;
 
-			var json = req.query;
-			var whereClause = "WHERE ";
+			let json = req.query;
+			let whereClause = "WHERE ";
 			if (Object.keys(json) != 0) {
 				for (key in json) {
 					if (json[key] == null) continue;

@@ -3,11 +3,10 @@ import Cookies from 'js-cookie';
 var expire;
 
 const Cookie = (remember) => {
-	expire = remember == false;
-
+	expire = remember;
 	/**Sets the key to the value */
 	const set = (key, value) => {
-		if (expire) Cookies.set(key, value, { expires: 15, sameSite: 'strict' });
+		if (expire === true) Cookies.set(key, value, { expires: 180, sameSite: 'strict' });
 		else Cookies.set(key, value, { sameSite: 'strict' });
 	}
 

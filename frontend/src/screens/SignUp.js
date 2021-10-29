@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-function Copyright(props) {
+const Copyright = (props) => {
 	return (
 		<Typography variant="body2" color="text.secondary" align="center" {...props}>
 			{'Copyright © '}
@@ -24,7 +24,7 @@ function Copyright(props) {
 	);
 }
 
-export default function SignUp(props) {
+const SignUp = (props) => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
@@ -38,7 +38,7 @@ export default function SignUp(props) {
 
 			if (errorsExist(email, password)) return;
 
-			await axios.post('http://localhost:5000/users/signup', {
+			await axios.post('http://localhost:5000/auth/signup', {
 				email: email,
 				password: password
 			});
@@ -69,7 +69,7 @@ export default function SignUp(props) {
 	}
 
 	const validEmail = (email) => {
-		return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+		return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 	}
 
 	const validPassword = (password) => {
@@ -183,3 +183,5 @@ export default function SignUp(props) {
 		</Box>
 	);
 }
+
+export default SignUp;

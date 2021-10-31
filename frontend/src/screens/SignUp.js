@@ -28,7 +28,7 @@ const SignUp = (props) => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
-	const [emailError, setEmailError] = useState(false);
+	const [emailError, setEmailError] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordError, setPasswordError] = useState(false);
 
@@ -52,17 +52,17 @@ const SignUp = (props) => {
 	const errorsExist = (email, password) => {
 		var error = false;
 		if (!validEmail(email)) {
-			setEmailError(true);
+			setEmailError('Email address is not a valid email address');
 			error = true;
 		} else {
-			setEmailError(false);
+			setEmailError('');
 		}
 
 		if (!validPassword(password)) {
-			setPasswordError(true);
+			setPasswordError('Password must be between 3 and 60 characters, at least one number, one lower case and one upper case character');
 			error = true;
 		} else {
-			setPasswordError(false);
+			setPasswordError('');
 		}
 
 		return error;
@@ -73,7 +73,7 @@ const SignUp = (props) => {
 	}
 
 	const validPassword = (password) => {
-		return password.length > 2;
+		return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{3,}$/.test(password);
 	}
 
 	return (
@@ -137,8 +137,8 @@ const SignUp = (props) => {
 									label="Email Address"
 									type="email"
 									margin="normal"
-									error={emailError}
-									helperText={emailError ? "Email address not valid" : ""}
+									error={emailError ? true : false}
+									helperText={emailError}
 									required
 									fullWidth
 									autoComplete="email"
@@ -151,8 +151,8 @@ const SignUp = (props) => {
 									label="Password"
 									type="password"
 									margin="normal"
-									error={passwordError}
-									helperText={passwordError ? "Password cannot be less than 3 characters" : ""}
+									error={passwordError ? true : false}
+									helperText={passwordError}
 									required
 									fullWidth
 									autoComplete="current-password"

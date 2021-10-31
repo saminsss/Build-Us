@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import Authentication from '../Authentication';
+import Authentication from '../Core/Authentication';
 import { Route, Redirect } from 'react-router';
 import Cookies from 'js-cookie'
 

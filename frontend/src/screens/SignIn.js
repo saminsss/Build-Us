@@ -12,7 +12,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Cookies from '../components/Cookie';
+import Cookies from '../components/Core/Cookie';
 
 const Axios = axios.create();
 
@@ -33,7 +33,7 @@ const SignIn = (props) => {
 	const [email, setEmail] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [password, setPassword] = useState('');
-	const [passwordError, setPasswordError] = useState(false);
+	const [passwordError, setPasswordError] = useState('');
 	const [remember, setRemember] = useState(false);
 
 	const handleSubmit = async (event) => {
@@ -79,17 +79,10 @@ const SignIn = (props) => {
 	const errorsExist = (email, password) => {
 		let error = false;
 		if (!validEmail(email)) {
-			setEmailError('Email address not valid');
+			setEmailError('Email address is not a valid email address');
 			error = true;
 		} else {
 			setEmailError('');
-		}
-
-		if (!validPassword(password)) {
-			setPasswordError('Password is not valid');
-			error = true;
-		} else {
-			setPasswordError('');
 		}
 
 		return error;
@@ -97,10 +90,6 @@ const SignIn = (props) => {
 
 	const validEmail = (email) => {
 		return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
-	}
-
-	const validPassword = (password) => {
-		return password.length > 2;
 	}
 
 	return (

@@ -62,14 +62,14 @@ const CustomerListResults = ({ customers, ...rest }) => {
 
 	return (
 		<Card {...rest}>
-			<Box sx={{ minWidth: 1050 }}>
+			<Box>
 				<Table>
 					<TableHead>
 						<TableRow>
 							<TableCell padding="checkbox">
 								<Checkbox
 									checked={selectedCustomerIds.length === customers.length}
-									color="primary"
+									color="secondary"
 									indeterminate={
 										selectedCustomerIds.length > 0
 										&& selectedCustomerIds.length < customers.length

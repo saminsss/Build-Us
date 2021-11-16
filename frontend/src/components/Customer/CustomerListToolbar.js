@@ -23,7 +23,7 @@ const CustomerListToolbar = (props) => (
         Export
       </Button>
       <Button
-        color="primary"
+        color="secondary"
         variant="contained"
       >
         Add customer

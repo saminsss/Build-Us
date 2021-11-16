@@ -10,6 +10,7 @@ app.use(express.json());
 //routes and controllers
 require('./routes/customers')(app);
 require('./routes/users')(app);
+require('./routes/transactions')(app);
 require('./components/auth').authenticate(app);
 
 const port = process.env.PORT;

@@ -40,7 +40,11 @@ const Authentication = () => {
 	const setAuthentication = (Axios) => {
 		Axios.interceptors.request.use(async (config) => {
 			let currentDate = new Date();
-			const decodedToken = Decode(Cookies.get('accessToken'));
+
+			const accessToken = Cookies.get('accessToken');
+			if (!accessToken) return config;
+
+			const decodedToken = Decode(accessToken);
 			if (decodedToken.exp * 1000 < currentDate.getTime()) {
 				const data = await refreshToken();
 				config.headers.authorization = "Bearer " + data.accessToken;

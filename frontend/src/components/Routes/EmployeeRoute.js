@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 import Authentication from '../Core/Authentication';
 import { Route, Redirect } from 'react-router';
 import Cookies from 'js-cookie'
 
+const Axios = axios.create();
+Axios.CancelToken = axios.CancelToken;
+Axios.isCancel = axios.isCancel;
 Authentication.setAuthentication(Axios);
 
 let mount = false;
@@ -15,7 +18,10 @@ const EmployeeRoute = ({ component: Component, ...rest }) => {
 
 		const getRole = async () => {
 			try {
-				const res = await Axios.get('http://localhost:5000/users/' + Cookies.get('id'), { cancelToken: source.token, params: { id: Cookies.get('id') } })
+				const id = Cookies.get('id');
+				if (!id) return;
+
+				const res = await Axios.get('http://localhost:5000/users/' + id, { cancelToken: source.token, params: { id: id } })
 				const role = res.data.role;
 				setRole(() => (role));
 			} catch (err) {

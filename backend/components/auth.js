@@ -61,6 +61,7 @@ const authenticate = (app) => {
 			const id = { id: user.id };
 			const accessToken = generateAccessToken(id);
 			const refreshToken = generateRefreshToken(id);
+			//TODO add user id to auth table so token can be updated
 			const refreshRes = await authController.insertToken(refreshToken);
 
 			if (refreshRes.msg == "success") {
@@ -133,8 +134,8 @@ const authenticate = (app) => {
 			if (!refreshToken) return res.status(401).json({ msg: "error" });
 
 			const token = await authController.getToken(refreshToken);
-
-			if (token.msg != 'success') return res.status(403).json({ msg: "error" });
+			console.log(token)
+			if (token.msg != 'success') return res.status(200).json({ msg: "error" });
 
 			jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
 				if (err) return res.status(403).json({ msg: "error" });

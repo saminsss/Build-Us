@@ -44,7 +44,7 @@ const SignIn = (props) => {
 			cookie.set('remember', remember);
 			event.preventDefault();
 
-			if (errorsExist(email, password)) return;
+			if (errorsExist(email)) return;
 
 			const res = await Axios.post('http://localhost:5000/auth/signin', {
 				email: email,
@@ -76,7 +76,7 @@ const SignIn = (props) => {
 		}
 	}
 
-	const errorsExist = (email, password) => {
+	const errorsExist = (email) => {
 		let error = false;
 		if (!validEmail(email)) {
 			setEmailError('Email address is not a valid email address');
@@ -102,8 +102,6 @@ const SignIn = (props) => {
 				alignSelf: 'center',
 				margin: '0 0 0 0',
 				padding: '20px 0 0 0',
-				backgroundColor: '#f8f8f6',
-				width: '100%',
 				height: '100vh',
 				overflow: 'auto'
 			}}

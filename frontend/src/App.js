@@ -1,25 +1,62 @@
-import { BrowserRouter as Router, Switch, Route as CustomerRoute } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Route as CustomerRoute } from "react-router-dom";
+
 import Home from "./screens/Home";
 import Dashboard from "./screens/Dashboard";
 import SignIn from "./screens/SignIn";
 import SignUp from "./screens/SignUp";
 import Customer from "./screens/Customer";
 import Unauthorized from "./screens/Unauthorized";
+import NotFound from "./screens/NotFound"
 import AdminRoute from "./components/Routes/AdminRoute";
 import EmployeeRoute from "./components/Routes/EmployeeRoute";
+import DrawerLayout from "./components/App/DrawerLayout";
+import SimpleLayout from "./components/App/SimpleLayout";
+import { ThemeProvider, createTheme } from "@material-ui/core";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Helvetica', 'Arial', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"'
+    ].join(','),
+  },
+  palette: {
+    primary: {
+      main: 'rgb(249, 250, 252)',
+    },
+    secondary: {
+      main: 'rgb(16, 23, 43)',
+      light: 'rgb(28, 38, 59)',
+      contrastText: 'rgb(16, 185, 129)'
+    },
+  },
+});
 
 const App = () => {
   return (
-    <Router>
-      <Switch>
-        <CustomerRoute exact path="/" component={Home} />
-        <AdminRoute exact path="/admin" component={Dashboard} />
-        <EmployeeRoute exact path="/customers" component={Customer} />
-        <CustomerRoute exact path="/signin" component={SignIn} />
-        <CustomerRoute exact path="/signup" component={SignUp} />
-        <CustomerRoute exact path="/unauthorized" component={Unauthorized} />
-      </Switch>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Switch>
+
+          <Route exact path={["/dashboard", "/customers"]}>
+            <DrawerLayout>
+              <AdminRoute exact path="/dashboard" component={Dashboard} />
+              <EmployeeRoute exact path="/customers" component={Customer} />
+            </DrawerLayout>
+          </Route>
+
+          <Route exact path={["/", "/signin", "/signup", "/unauthorized"]}>
+            <SimpleLayout>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/signin" component={SignIn} />
+              <Route exact path="/signup" component={SignUp} />
+              <Route exact path="/unauthorized" component={Unauthorized} />
+            </SimpleLayout>
+          </Route>
+          <Route exact path="/*" component={NotFound} />
+
+        </Switch>
+      </Router>
+    </ThemeProvider >
   );
 }
 

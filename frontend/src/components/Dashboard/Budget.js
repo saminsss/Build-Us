@@ -39,7 +39,7 @@ const Budget = (props) => (
 				<Grid item>
 					<Avatar
 						sx={{
-							backgroundColor: red[600],
+							backgroundColor: red[500],
 							height: 56,
 							width: 56
 						}}

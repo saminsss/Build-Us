@@ -134,7 +134,7 @@ const authenticate = (app) => {
 			if (!refreshToken) return res.status(401).json({ msg: "error" });
 
 			const token = await authController.getToken(refreshToken);
-			console.log(token)
+
 			if (token.msg != 'success') return res.status(200).json({ msg: "error" });
 
 			jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {

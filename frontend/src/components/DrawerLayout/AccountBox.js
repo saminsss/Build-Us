@@ -1,11 +1,22 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import {
-	Box, Card, List, Avatar,
-	CardContent, ListItemIcon, ListItemText,
-	ListItem, makeStyles, Typography
+	Box,
+	Card,
+	List,
+	Avatar,
+	CardContent,
+	ListItemIcon,
+	ListItemText,
+	Typography,
+	ListItem,
+	makeStyles,
 } from '@material-ui/core';
-import { Settings, AccountCircle, ExitToApp } from '@material-ui/icons';
+import {
+	Settings,
+	AccountCircle,
+	ExitToApp
+} from '@material-ui/icons';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import Authentication from '../Core/Authentication';
@@ -40,9 +51,14 @@ function AccountBox(props) {
 	const history = useHistory();
 
 	const signOut = async () => {
+		//TODO needs to be verified
 		await Axios.post('http://localhost:5000/auth/signout', {
 			token: Cookies.get('refreshToken')
 		});
+		Cookies.remove('accessToken');
+		Cookies.remove('refreshToken');
+		Cookies.remove('remember');
+		Cookies.remove('id');
 	}
 
 	const list = [
@@ -86,7 +102,7 @@ function AccountBox(props) {
 									{item.icon}
 								</ListItemIcon>
 								<ListItemText>
-									<Typography style={{ fontWeight: 500 }} variant='subtitle2'>
+									<Typography style={{ fontWeight: 400 }} variant='subtitle2'>
 										{item.name}
 									</Typography>
 								</ListItemText>
@@ -97,10 +113,6 @@ function AccountBox(props) {
 							button
 							onClick={() => {
 								signOut();
-								Cookies.remove('accessToken');
-								Cookies.remove('refreshToken');
-								Cookies.remove('remember');
-								Cookies.remove('id');
 								return (
 									history.push('/')
 								)
@@ -110,7 +122,7 @@ function AccountBox(props) {
 								<ExitToApp />
 							</ListItemIcon>
 							<ListItemText>
-								<Typography style={{ fontWeight: 500 }} variant='subtitle2'>
+								<Typography style={{ fontWeight: 400 }} variant='subtitle2'>
 									Logout
 								</Typography>
 							</ListItemText>

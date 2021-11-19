@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Box, Container } from '@material-ui/core';
+import {
+	Box,
+	Container
+} from '@material-ui/core';
 import CustomerListResults from '../components/Customer/CustomerListResults';
 import CustomerListToolbar from '../components/Customer/CustomerListToolbar';
 import Cookies from 'js-cookie';

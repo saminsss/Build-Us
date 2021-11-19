@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Route as CustomerRoute } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Home from "./screens/Home";
 import Dashboard from "./screens/Dashboard";
@@ -22,11 +22,11 @@ const theme = createTheme({
   palette: {
     primary: {
       main: 'rgb(249, 250, 252)',
+      contrastText: 'rgb(16, 185, 129)'
     },
     secondary: {
       main: 'rgb(16, 23, 43)',
-      light: 'rgb(28, 38, 59)',
-      contrastText: 'rgb(16, 185, 129)'
+      light: 'rgb(34, 44, 66)',
     },
   },
 });

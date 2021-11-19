@@ -19,8 +19,8 @@ const authController = () => {
 	}
 
 	const getToken = async (token) => {
+		let res = {};
 		try {
-			let res = {};
 			let sql = "SELECT TOKEN FROM " + authTableName + " WHERE TOKEN = $1";
 			let sqlData = [token];
 			const returntoken = await pool.query(sql, sqlData);
@@ -30,13 +30,14 @@ const authController = () => {
 				return res;
 			}
 
-			res.token = returntoken.rows[0];
+			res.token = returntoken.rows[0].token;
 			res.msg = 'success';
-			return res;
 		} catch (error) {
 			console.log("JSON Data not correctly formatted");
 			res.msg = "error";
 		}
+
+		return res;
 	}
 
 	const updateToken = async (token) => {

@@ -42,8 +42,8 @@ function DrawerLayout(props) {
 
 	return (
 		<Box className={styles.root}>
-			<AppBar user={user} />
-			<DrawerBar user={user} />
+			{user && <AppBar user={user} />}
+			{user && <DrawerBar user={user} />}
 			<Box className={styles.page}>
 				<Box className={styles.toolbar}></Box>
 				{props.children}

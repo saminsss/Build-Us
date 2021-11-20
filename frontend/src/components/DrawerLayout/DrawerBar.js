@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
 	Box,
 	Drawer,
@@ -29,8 +29,11 @@ const useStyles = makeStyles((theme) => {
 
 function DrawerBar({ user }) {
 	const styles = useStyles();
+	const [list, setList] = useState([]);
 
-	const list = getDrawerContents(user);
+	useEffect(() => {
+		setList(getDrawerContents(user));
+	}, [user])
 
 	return (
 		<Drawer

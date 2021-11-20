@@ -63,7 +63,7 @@ function DrawerListItems({ list }) {
 
 	return (
 		<List>
-			{list.map((listitems, index) => (
+			{list?.map((listitems, index) => (
 				<Box key={index}>
 					<ListSubheader classes={{ root: styles.subHeader }}>{listitems.title}</ListSubheader>
 					{listitems.items.map((item, index) => (

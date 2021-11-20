@@ -5,8 +5,6 @@ import { Route, Redirect } from 'react-router';
 import Cookies from 'js-cookie'
 
 const Axios = axios.create();
-Axios.CancelToken = axios.CancelToken;
-Axios.isCancel = axios.isCancel;
 Authentication.setAuthentication(Axios);
 
 let mount = false;
@@ -14,14 +12,16 @@ const EmployeeRoute = ({ component: Component, ...rest }) => {
 	const [role, setRole] = useState('');
 
 	useEffect(() => {
-		let source = Axios.CancelToken.source();
-
 		const getRole = async () => {
 			try {
 				const id = Cookies.get('id');
 				if (!id) return;
 
-				const res = await Axios.get('http://localhost:5000/users/' + id, { cancelToken: source.token, params: { id: id } })
+				const res = await Axios.get('http://localhost:5000/users/' + id,
+					{
+						params: { id: id }
+					}
+				)
 				const role = res.data.role;
 				setRole(() => (role));
 			} catch (err) {
@@ -32,7 +32,7 @@ const EmployeeRoute = ({ component: Component, ...rest }) => {
 		getRole();
 
 		return () => {
-			source.cancel();
+			mount = false;
 		}
 	}, [])
 
@@ -42,6 +42,7 @@ const EmployeeRoute = ({ component: Component, ...rest }) => {
 			render={props => {
 				const authenticated = Authentication.isAuthenticated();
 				if (authenticated === true) {
+					//if user is either admin or employee then continue to component
 					if (role === 'A' || role === 'E') {
 						return <Component {...props} />
 					} else {

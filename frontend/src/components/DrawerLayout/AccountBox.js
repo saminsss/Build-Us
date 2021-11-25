@@ -51,8 +51,7 @@ function AccountBox(props) {
 	const history = useHistory();
 
 	const signOut = async () => {
-		//TODO needs to be verified
-		await Axios.post('http://localhost:5000/auth/signout', {
+		await Axios.post('/auth/signout', {
 			token: Cookies.get('refreshToken')
 		});
 		Cookies.remove('accessToken');

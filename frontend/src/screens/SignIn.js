@@ -46,7 +46,7 @@ const SignIn = (props) => {
 
 			if (errorsExist(email)) return;
 
-			const res = await Axios.post('http://localhost:5000/auth/signin', {
+			const res = await Axios.post('/auth/signin', {
 				email: email,
 				password: password
 			});
@@ -169,7 +169,7 @@ const SignIn = (props) => {
 								</Link>
 							</Grid>
 							<Grid item>
-								<Link href="#" variant="body2">
+								<Link href="/signup" variant="body2">
 									{"Don't have an account? Sign Up"}
 								</Link>
 							</Grid>

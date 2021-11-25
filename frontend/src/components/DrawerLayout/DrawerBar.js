@@ -6,7 +6,7 @@ import {
 	makeStyles,
 } from '@material-ui/core'
 import getDrawerContents from './Functions/getDrawerContents';
-import DrawerListItems from './DrawerListItems';
+import DrawerList from './DrawerList';
 
 const drawerWidth = 240;
 
@@ -17,9 +17,9 @@ const useStyles = makeStyles((theme) => {
 		},
 		drawerPaper: {
 			background: theme.palette.secondary.main,
-			width: drawerWidth,
 			color: theme.palette.primary.main,
-			padding: theme.spacing(1)
+			padding: theme.spacing(1),
+			width: drawerWidth,
 		},
 		title: {
 			padding: theme.spacing(2)
@@ -48,7 +48,7 @@ function DrawerBar({ user }) {
 				</Typography>
 			</Box>
 
-			<DrawerListItems list={list}></DrawerListItems>
+			<DrawerList list={list} />
 		</Drawer>
 	)
 }

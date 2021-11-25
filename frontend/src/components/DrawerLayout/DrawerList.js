@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => {
 			marginTop: theme.spacing(1)
 		},
 		icon: {
-			minWidth: '40px',
+			minWidth: theme.spacing(5),
 		}
 	}
 });

@@ -21,12 +21,12 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: 'rgb(249, 250, 252)',
-      contrastText: 'rgb(16, 185, 129)'
+      main: 'rgb(250, 250, 250)',
+      contrastText: 'rgb(50, 125, 200)'
     },
     secondary: {
-      main: 'rgb(16, 23, 43)',
-      light: 'rgb(34, 44, 66)',
+      main: 'rgb(10, 20, 35)',
+      light: 'rgb(35, 45, 65)',
     },
   },
 });

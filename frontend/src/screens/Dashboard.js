@@ -18,7 +18,10 @@ const Dashboard = () => (
 		<Box sx={{
 			py: 3,
 		}}>
-			<Container>
+			<Box sx={{
+				pl: 3,
+				pr: 1
+			}}>
 				<Grid
 					container
 					spacing={2}
@@ -69,7 +72,7 @@ const Dashboard = () => (
 						<Transactions />
 					</Grid>
 				</Grid>
-			</Container>
+			</Box>
 		</Box>
 
 	</Box>

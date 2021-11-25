@@ -36,7 +36,7 @@ function DrawerLayout(props) {
 	}, []);
 
 	const fetchUsers = async () => {
-		const res = await Axios.get('http://localhost:5000/users/' + Cookies.get('id'), { params: { id: Cookies.get('id') } });
+		const res = await Axios.get('/users/' + Cookies.get('id'), { params: { id: Cookies.get('id') } });
 		setUser(res.data);
 	};
 

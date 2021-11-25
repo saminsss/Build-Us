@@ -22,7 +22,7 @@ const Authentication = () => {
 	const refreshToken = async () => {
 		console.log('new token')
 		try {
-			const res = await Axios.create().post('http://localhost:5000/auth/refresh', {
+			const res = await Axios.create().post('/auth/refresh', {
 				token: Cookies.get('refreshToken')
 			});
 

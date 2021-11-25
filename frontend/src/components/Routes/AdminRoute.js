@@ -17,7 +17,7 @@ const AdminRoute = ({ component: Component, ...rest }) => {
 				const id = Cookies.get('id');
 				if (!id) return;
 
-				const res = await Axios.get('http://localhost:5000/users/' + id,
+				const res = await Axios.get('/users/' + id,
 					{
 						params: { id: id }
 					}

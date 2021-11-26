@@ -67,9 +67,7 @@ function AppNavBar({ items: list }) {
 									onClick={() => history.push(item.path)}
 									onMouseOver={() => !item.subitems && handleHover('')}
 								>
-									<ListItemText
-
-									>
+									<ListItemText>
 										<Typography style={{ fontSize: 16.5, fontWeight: 375 }} variant='subtitle2'>
 											{item.name}
 										</Typography>

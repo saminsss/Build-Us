@@ -7,7 +7,6 @@ import Cookies from 'js-cookie'
 const Axios = axios.create();
 Authentication.setAuthentication(Axios);
 
-let mount = false;
 const EmployeeRoute = ({ component: Component, ...rest }) => {
 	const [role, setRole] = useState('');
 
@@ -30,10 +29,6 @@ const EmployeeRoute = ({ component: Component, ...rest }) => {
 		}
 
 		getRole();
-
-		return () => {
-			mount = false;
-		}
 	}, [])
 
 	return (
@@ -46,8 +41,7 @@ const EmployeeRoute = ({ component: Component, ...rest }) => {
 					if (role === 'A' || role === 'E') {
 						return <Component {...props} />
 					} else {
-						if (mount === false) mount = true
-						else return <Redirect
+						return role && <Redirect
 							to={{
 								pathname: "/unauthorized",
 								state: { from: props.location }

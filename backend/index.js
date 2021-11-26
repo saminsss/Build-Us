@@ -7,17 +7,6 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
-//for deployment to heroku
-app.get('/', (req, res) => {
-	res.status(200).json({
-		status: 'success',
-		data: {
-			name: 'BuildUs',
-			version: '0.1.0'
-		}
-	});
-});
-
 //routes and controllers
 require('./routes/customers')(app);
 require('./routes/users')(app);

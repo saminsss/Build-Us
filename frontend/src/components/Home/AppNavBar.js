@@ -41,7 +41,7 @@ function AppNavBar({ items: list }) {
 
 	const handleHover = (e) => {
 		setState(() => {
-			return { [e]: !state[e] };
+			return { [e]: true };
 		});
 	}
 
@@ -58,14 +58,17 @@ function AppNavBar({ items: list }) {
 						display: 'flex'
 					}}>
 						{list.map((item, index) => (
-							<Box key={index}>
+							<Box
+								key={index}
+								onMouseOver={() => item.subitems && !state[item.name] && handleHover(item.name)}
+							>
 								<ListItem
 									className={styles.listitem}
 									onClick={() => history.push(item.path)}
 									onMouseOver={() => !item.subitems && handleHover('')}
 								>
 									<ListItemText
-										onMouseOver={() => item.subitems && handleHover(item.name)}
+
 									>
 										<Typography style={{ fontSize: 16.5, fontWeight: 375 }} variant='subtitle2'>
 											{item.name}

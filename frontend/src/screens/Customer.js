@@ -21,7 +21,7 @@ const CustomerList = () => {
 
 
 	const fetchCustomers = async () => {
-		const res = await Axios.get('http://localhost:5000/customers/' + Cookies.get('id')); //ID is required for auth
+		const res = await Axios.get('/api/customers/' + Cookies.get('id')); //ID is required for auth
 		setCustomers(res.data);
 	};
 

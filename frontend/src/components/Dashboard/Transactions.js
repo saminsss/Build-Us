@@ -26,7 +26,7 @@ const Transactions = () => {
 
 
 	const fetchTransactions = async () => {
-		const res = await Axios.get('/transactions/' + Cookies.get('id'));
+		const res = await Axios.get('/api/transactions/' + Cookies.get('id'));
 		setTransactions(res.data);
 	};
 

@@ -4,10 +4,10 @@ const { authenticateToken } = require("../components/auth");
 const tableName = "CUSTOMERS";
 
 //routes
-const insertRoutes = ["/customers/:id"];
-const selectRoutes = ["/customers/:id"];
-const updateRoutes = ["/customers/:id"];
-const deleteRoutes = ["/customers/:id"];
+const insertRoutes = ["/api/customers/:id"];
+const selectRoutes = ["/api/customers/:id"];
+const updateRoutes = ["/api/customers/:id"];
+const deleteRoutes = ["/api/customers/:id"];
 
 const customers = (app) => {
 	//insert a customer

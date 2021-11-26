@@ -4,10 +4,10 @@ const { authenticateToken } = require("../components/auth");
 const tableName = "TRANSACTIONS";
 
 //routes
-const insertRoutes = ["/transactions/:id"];
-const selectRoutes = ["/transactions/:id"];
-const updateRoutes = ["/transactions/:id"];
-const deleteRoutes = ["/transactions/:id"];
+const insertRoutes = ["/api/transactions/:id"];
+const selectRoutes = ["/api/transactions/:id"];
+const updateRoutes = ["/api/transactions/:id"];
+const deleteRoutes = ["/api/transactions/:id"];
 
 const transactions = (app) => {
 	//insert a customer
@@ -60,8 +60,8 @@ const transactions = (app) => {
 			}
 
 			console.log(sql, sqlData);
-			const students = await pool.query(sql, sqlData);
-			res.json(students.rows);
+			const transactions = await pool.query(sql, sqlData);
+			res.json(transactions.rows);
 		} catch (error) {
 			console.log("Route not correctly formatted");
 			res.json(error.message);

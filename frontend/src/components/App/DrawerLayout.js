@@ -36,8 +36,13 @@ function DrawerLayout(props) {
 	}, []);
 
 	const fetchUsers = async () => {
-		const res = await Axios.get('/users/' + Cookies.get('id'), { params: { id: Cookies.get('id') } });
-		setUser(res.data);
+		const res = await Axios.get('/api/users/' + Cookies.get('id'),
+			{
+				params: {
+					id: Cookies.get('id')
+				}
+			});
+		setUser(res.data[0]);
 	};
 
 	return (

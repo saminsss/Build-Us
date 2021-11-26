@@ -16,12 +16,12 @@ const EmployeeRoute = ({ component: Component, ...rest }) => {
 				const id = Cookies.get('id');
 				if (!id) return;
 
-				const res = await Axios.get('/users/' + id,
+				const res = await Axios.get('/api/users/' + id,
 					{
 						params: { id: id }
 					}
 				)
-				const role = res.data.role;
+				const role = res.data[0]?.role;
 				setRole(() => (role));
 			} catch (err) {
 				console.log(err);

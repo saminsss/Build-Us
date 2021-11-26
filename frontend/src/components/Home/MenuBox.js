@@ -49,7 +49,6 @@ function MenuBox({ items }) {
 								key={index}
 								button
 								onClick={() => history.push(item.path)}
-
 								classes={{ root: styles.listitem }}
 							>
 								<ListItemText>

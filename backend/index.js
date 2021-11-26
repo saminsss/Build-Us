@@ -9,6 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 //For production use
+//if(process.env.NODE_ENV == 'production')
 // app.use(express.static(path.join(__dirname, 'build')));
 
 // app.get('/*', (req, res) => {

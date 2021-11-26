@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => {
 	}
 });
 
-function AppNavBar({ user }) {
+function DrawerNavBar({ user }) {
 
 	const styles = useStyles();
 
@@ -57,7 +57,10 @@ function AppNavBar({ user }) {
 			elevation={0}
 		>
 			<Toolbar>
-				<Avatar className={styles.avatar} onClick={() => { openAccountCard() }}>
+				<Avatar
+					className={styles.avatar}
+					onClick={() => openAccountCard()}
+				>
 					{user?.email[0].toUpperCase()}
 				</Avatar>
 
@@ -67,4 +70,4 @@ function AppNavBar({ user }) {
 	)
 }
 
-export default AppNavBar;
+export default DrawerNavBar;

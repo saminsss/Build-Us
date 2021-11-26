@@ -34,14 +34,14 @@ const useStyles = makeStyles((theme) => {
 	}
 });
 
-function AppNavBar({ items: list }) {
+function AppNavBar({ items }) {
 	const styles = useStyles();
 	const [state, setState] = useState({});
 	const history = useHistory();
 
-	const handleHover = (e) => {
+	const handleHover = (e, b) => {
 		setState(() => {
-			return { [e]: true };
+			return { [e]: b };
 		});
 	}
 
@@ -57,15 +57,15 @@ function AppNavBar({ items: list }) {
 					<List style={{
 						display: 'flex'
 					}}>
-						{list.map((item, index) => (
+						{items?.map((item, index) => (
 							<Box
 								key={index}
-								onMouseOver={() => item.subitems && !state[item.name] && handleHover(item.name)}
+								onMouseOver={() => item.subitems && handleHover(item.name, true)}
+								onMouseLeave={() => item.subitems && handleHover(item.name, false)}
 							>
 								<ListItem
 									className={styles.listitem}
 									onClick={() => history.push(item.path)}
-									onMouseOver={() => !item.subitems && handleHover('')}
 								>
 									<ListItemText>
 										<Typography style={{ fontSize: 16.5, fontWeight: 375 }} variant='subtitle2'>

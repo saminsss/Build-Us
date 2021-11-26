@@ -4,8 +4,8 @@ const authTableName = "AUTHENTICATION"
 
 const authController = () => {
 	const insertToken = async (token) => {
+		let res = {};
 		try {
-			let res = {};
 			let sql = "INSERT INTO " + authTableName + " (TOKEN) VALUES ($1) RETURNING *";
 			let sqlData = [token];
 			const newtoken = await pool.query(sql, sqlData);
@@ -41,8 +41,8 @@ const authController = () => {
 	}
 
 	const updateToken = async (token) => {
+		let res = {};
 		try {
-			let res = {};
 			let sql = "UPDATE " + authTableName + " SET TOKEN = $1 WHERE TOKEN = $2";
 			let sqlData = [token];
 			const returntoken = await pool.query(sql, sqlData);
@@ -55,8 +55,8 @@ const authController = () => {
 	}
 
 	const deleteToken = async (token) => {
+		let res = {};
 		try {
-			let res = {};
 			let sql = "DELETE FROM " + authTableName + " WHERE TOKEN = $1";
 			let sqlData = [token];
 			const returntoken = await pool.query(sql, sqlData);

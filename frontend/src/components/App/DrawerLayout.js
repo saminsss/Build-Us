@@ -3,7 +3,7 @@ import {
 	Box,
 	makeStyles,
 } from '@material-ui/core'
-import AppBar from '../DrawerLayout/AppNavBar';
+import DrawerNavBar from '../DrawerLayout/DrawerNavBar';
 import DrawerBar from '../DrawerLayout/DrawerBar';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -42,7 +42,7 @@ function DrawerLayout(props) {
 
 	return (
 		<Box className={styles.root}>
-			{user && <AppBar user={user} />}
+			{user && <DrawerNavBar user={user} />}
 			{user && <DrawerBar user={user} />}
 			<Box className={styles.page}>
 				<Box className={styles.toolbar}></Box>

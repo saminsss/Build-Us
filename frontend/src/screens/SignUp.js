@@ -42,7 +42,10 @@ const SignUp = (props) => {
 
 			await Axios.post('/auth/signup', {
 				email: email,
-				password: password
+				password: password,
+				firstname: firstName,
+				lastname: lastName,
+				role: 'A'
 			});
 
 			props.history.push('/signin');
@@ -61,7 +64,7 @@ const SignUp = (props) => {
 		}
 
 		if (!validPassword(password)) {
-			setPasswordError('Password must be between 3 and 60 characters, at least one number, one lower case and one upper case character');
+			setPasswordError('Password must be more than 3 characters, at least one number, one lower case and one upper case character');
 			error = true;
 		} else {
 			setPasswordError('');

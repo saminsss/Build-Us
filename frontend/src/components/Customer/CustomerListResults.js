@@ -95,7 +95,7 @@ const CustomerListResults = ({ customers, ...rest }) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{customers.slice(0, limit).map((customer) => (
+						{customers?.slice(0, limit).map((customer) => (
 							<TableRow
 								hover
 								key={customer.id}
@@ -128,7 +128,7 @@ const CustomerListResults = ({ customers, ...rest }) => {
 									{customer.email}
 								</TableCell>
 								<TableCell>
-									{`${customer.address?.city}, ${customer.address?.state}, ${customer.address?.country}`}
+									{`${customer.city}, ${customer.province}, ${customer.country}`}
 								</TableCell>
 								<TableCell>
 									{customer.phone}

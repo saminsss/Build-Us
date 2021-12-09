@@ -6,7 +6,6 @@ import {
 } from '@material-ui/core';
 import getTableInfo from '../components/Employee/getTableInfo';
 import EmployeeListResults from '../components/Shared/ListResults';
-import EmployeeListToolbar from '../components/Shared/ListToolbar';
 import Cookies from 'js-cookie';
 import Authentication from '../components/Core/Authentication';
 
@@ -15,9 +14,11 @@ Authentication.setAuthentication(Axios); //set new auth tokens in req header eve
 
 const EmployeeList = () => {
 	const [employees, setEmployees] = useState([]);
+	const [tableInfo, setTableInfo] = useState([]);
 
 	useEffect(() => {
 		fetchEmployees();
+		setTableInfo(getTableInfo());
 	}, []);
 
 
@@ -37,7 +38,8 @@ const EmployeeList = () => {
 				<Container maxWidth={false}>
 					<Box sx={{ pt: 3 }}>
 						<EmployeeListResults
-							tableinfo={getTableInfo()}
+							componentname={'employees'}
+							tableinfo={tableInfo}
 							data={employees} />
 					</Box>
 				</Container>

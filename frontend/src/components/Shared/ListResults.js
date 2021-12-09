@@ -16,11 +16,15 @@ import {
 import ListToolbar from '../Shared/ListToolbar';
 import moment from 'moment';
 
-const ListResults = ({ tableinfo, data, ...rest }) => {
+const ListResults = ({ componentname, tableinfo, data, ...rest }) => {
 	const [rowData, setRowData] = useState([]);
 	const [selectedRows, setSelectedRows] = useState([]);
 	const [limit, setLimit] = useState(10);
 	const [page, setPage] = useState(0);
+
+	useEffect(() => {
+		buildSearchFilters(tableinfo);
+	}, [])
 
 	useEffect(() => {
 		setRowData(data);
@@ -71,24 +75,35 @@ const ListResults = ({ tableinfo, data, ...rest }) => {
 
 		let completecell = '';
 		for (let key of datakeys) {
+			if (!rowData[key]) continue;
 			if (key.includes('date'))
 				completecell += moment(rowData[key]).format('MMMM Do, YYYY') + seperator
 			else
 				completecell += rowData[key] + seperator
 		}
-		return completecell.substring(0, completecell.length - seperator?.length)
+		return completecell.substring(0, completecell.length - seperator.length)
+	}
+
+	const buildSearchFilters = (tableinfo) => {
+		let searchFilters = [];
+		for (let info of tableinfo) {
+			searchFilters.push(...info.rowdatakeys)
+		}
+		return searchFilters;
 	}
 
 	return (
-		<Box>
+		<Box {...rest}>
 			<ListToolbar
 				searchIn={data}
+				searchFilters={buildSearchFilters(tableinfo)}
 				setList={setRowData}
 				setPage={setPage}
-				button='Add customers'
-				placeholder='Search customer' />
+				button={'Add ' + componentname}
+				placeholder={'Search ' + componentname}
+			/>
 
-			<Card {...rest}>
+			<Card>
 				<Box>
 					<Table>
 						<TableHead>

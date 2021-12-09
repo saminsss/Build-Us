@@ -14,9 +14,11 @@ Authentication.setAuthentication(Axios); //set new auth tokens in req header eve
 
 const CustomerList = () => {
 	const [customers, setCustomers] = useState([]);
+	const [tableInfo, setTableInfo] = useState([]);
 
 	useEffect(() => {
 		fetchCustomers();
+		setTableInfo(getTableInfo())
 	}, []);
 
 	const fetchCustomers = async () => {
@@ -35,7 +37,8 @@ const CustomerList = () => {
 				<Container maxWidth={false}>
 					<Box sx={{ pt: 3 }}>
 						<CustomerListResults
-							tableinfo={getTableInfo()}
+							componentname={'customers'}
+							tableinfo={tableInfo}
 							data={customers} />
 					</Box>
 				</Container>

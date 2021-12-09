@@ -6,7 +6,6 @@ import {
 } from '@material-ui/core';
 import getTableInfo from '../components/Invoice/getTableInfo';
 import InvoiceListResults from '../components/Shared/ListResults';
-import InvoiceListToolbar from '../components/Shared/ListToolbar';
 import Cookies from 'js-cookie';
 import Authentication from '../components/Core/Authentication';
 
@@ -15,9 +14,11 @@ Authentication.setAuthentication(Axios); //set new auth tokens in req header eve
 
 const InvoiceList = () => {
 	const [invoices, setInvoices] = useState([]);
+	const [tableInfo, setTableInfo] = useState([]);
 
 	useEffect(() => {
 		fetchInvoices();
+		setTableInfo(getTableInfo());
 	}, []);
 
 
@@ -37,7 +38,8 @@ const InvoiceList = () => {
 				<Container maxWidth={false}>
 					<Box sx={{ pt: 3 }}>
 						<InvoiceListResults
-							tableinfo={getTableInfo()}
+							componentname={'invoices'}
+							tableinfo={tableInfo}
 							data={invoices} />
 					</Box>
 				</Container>

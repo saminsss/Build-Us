@@ -7,46 +7,83 @@ import {
   CardContent,
   TextField,
   InputAdornment,
-  SvgIcon,
   makeStyles
 } from '@material-ui/core';
 
+import SearchIcon from '@mui/icons-material/Search';
+import SortBox from './SortBox';
+
+import moment from 'moment';
 
 
 const useStyles = makeStyles((theme) => {
   return {
     button: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1)
+      marginLeft: theme.spacing(0.75),
+      marginRight: theme.spacing(0.75)
+    },
+    searchBox: {
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(3)
+    },
+    searchCard: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    searchBar: {
+      minWidth: '35%',
+    },
+    sortButtonBox: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    sortBox: {
+      display: 'block',
+      position: 'absolute',
+      marginTop: theme.spacing(5),
+      marginRight: theme.spacing(0.25),
+      minWidth: 200
     }
   }
 });
 
-const ListToolbar = (props) => {
+const ListToolbar = ({ searchIn, searchFilters, setList, setPage, button, placeholder, ...rest }) => {
   const styles = useStyles();
   const [searchValue, setSearchValue] = useState();
+  const [sortBox, setSortBox] = useState(false);
 
   useEffect(() => {
     filter();
   }, [searchValue]);
 
   const filter = () => {
-    const filteredList = props.searchIn.filter((item) => {
-      return item.email?.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.firstname?.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.lastname?.toLowerCase().includes(searchValue.toLowerCase());
+    const filteredList = searchIn.filter((item) => {
+      let filtered = false;
+      for (let key of searchFilters) {
+        if (key.includes('date'))
+          filtered = filtered || moment(item[key])?.format('MMMM Do, YYYY').toLowerCase().includes(searchValue?.toLowerCase());
+
+        else
+          filtered = filtered || item[key]?.toLowerCase().includes(searchValue?.toLowerCase());
+      }
+      return filtered;
     });
 
-    props.setList(filteredList);
+    setList(filteredList);
   }
 
   const handleOnChange = (e) => {
     setSearchValue(e.target.value);
-    props.setPage(0);
+    setPage(0);
+  }
+
+  const toggleSortBox = () => {
+    setSortBox(!sortBox);
   }
 
   return (
-    <Box {...props}>
+    <Box {...rest}>
       <Box
         sx={{
           display: 'flex',
@@ -64,24 +101,40 @@ const ListToolbar = (props) => {
           color="secondary"
           variant="contained"
         >
-          {props.button ? props.button : "Add"}
+          {button ? button : "Add"}
         </Button>
       </Box>
-      <Box sx={{ mt: 3 }}>
+      <Box className={styles.searchBox}>
         <Card>
-          <CardContent>
-            <Box sx={{ maxWidth: 500 }}>
+          <CardContent className={styles.searchCard}>
+            <Box className={styles.searchBar}>
               <TextField
                 fullWidth
                 value={searchValue}
                 onChange={e => handleOnChange(e)}
                 InputProps={{
-                  startAdornment: <SvgIcon color='secondary' />
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <SearchIcon />
+                    </InputAdornment>
+                  )
                 }}
-                placeholder={props.placeholder}
+                placeholder={placeholder}
                 variant="outlined"
               />
             </Box>
+            <Box className={styles.sortButtonBox}>
+              <Button
+                variant='outlined'
+                onClick={() => toggleSortBox()}
+              >
+                <SearchIcon />
+                Sort
+              </Button>
+              {sortBox && <SortBox className={styles.sortBox} />}
+            </Box>
+
+
           </CardContent>
         </Card>
       </Box>

@@ -15,8 +15,8 @@ const getTableInfo = () => {
 			seperator: ', '
 		},
 		{
-			headertitle: 'Type',
-			rowdatakeys: ['type'],
+			headertitle: 'Title',
+			rowdatakeys: ['title'],
 		},
 		{
 			headertitle: 'Phone',

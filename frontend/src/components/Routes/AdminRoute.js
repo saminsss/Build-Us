@@ -38,7 +38,7 @@ const AdminRoute = ({ component: Component, ...rest }) => {
 				const authenticated = Authentication.isAuthenticated();
 				if (authenticated === true) {
 					if (role === 'A') {
-						return <Component {...props} />
+						return <Component {...props} role={role} />
 					} else {
 						return role && <Redirect
 							to={{

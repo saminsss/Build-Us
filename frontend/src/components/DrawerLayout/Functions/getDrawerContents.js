@@ -1,11 +1,12 @@
 import {
 	Dashboard,
 	Person,
-	LocalMall
+	LocalMall,
+	Receipt
 } from '@material-ui/icons';
 
 const getDrawerContents = (user) => {
-	let list;
+	let list = [];
 	if (user?.role === 'A') {
 		list = [
 			{
@@ -22,21 +23,34 @@ const getDrawerContents = (user) => {
 				title: 'Management',
 				items: [
 					{
-						name: 'Customers',
+						name: 'Users',
 						icon: <Person color='primary' />,
-						path: '/customers'
+						subitems: [
+							{
+								name: 'Customers',
+								path: '/customers'
+							},
+							{
+								name: 'Employees',
+								path: '/employees'
+							},
+						]
 					},
 					{
 						name: 'Products',
 						icon: <LocalMall color='primary' />,
 						subitems: [
 							{
-								id: 1,
 								name: 'List',
 								path: '/products'
 							}
 						]
-					}
+					},
+					{
+						name: 'Invoices',
+						icon: <Receipt color='primary' />,
+						path: '/invoices'
+					},
 				]
 			}
 		];
@@ -66,7 +80,7 @@ const getDrawerContents = (user) => {
 			}
 		];
 	}
-	else {
+	else if (user?.role === 'C') {
 		list = [
 			{
 				title: 'General',

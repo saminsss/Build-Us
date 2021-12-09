@@ -1,16 +1,16 @@
 const pool = require("../components/db");
 const { authenticateToken } = require("../components/auth");
 
-const tableName = "CUSTOMERS";
+const tableName = "INVOICES";
 
 //routes
-const insertRoutes = ["/api/customers/:id"];
-const selectRoutes = ["/api/customers/:id"];
-const updateRoutes = ["/api/customers/:id"];
-const deleteRoutes = ["/api/customers/:id"];
+const insertRoutes = ["/api/invoices/:id"];
+const selectRoutes = ["/api/invoices/:id"];
+const updateRoutes = ["/api/invoices/:id"];
+const deleteRoutes = ["/api/invoices/:id"];
 
-const customers = (app) => {
-	//insert a customer
+const invoices = (app) => {
+	//insert a invoice
 	app.post(insertRoutes, authenticateToken, async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
@@ -31,15 +31,15 @@ const customers = (app) => {
 			sql += "RETURNING *"
 
 			console.log(sql, sqlData);
-			const newCustomer = await pool.query(sql, sqlData);
-			res.json(newCustomer.rows);
+			const newStudent = await pool.query(sql, sqlData);
+			res.json(newStudent.rows);
 		} catch (error) {
 			console.log("JSON Data not correctly formatted");
 			res.json(error.message);
 		}
 	});
 
-	//get customers
+	//get invoices
 	app.get(selectRoutes, authenticateToken, async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
@@ -60,15 +60,15 @@ const customers = (app) => {
 			}
 
 			console.log(sql, sqlData);
-			const customers = await pool.query(sql, sqlData);
-			res.json(customers.rows);
+			const students = await pool.query(sql, sqlData);
+			res.json(students.rows);
 		} catch (error) {
 			console.log("Route not correctly formatted");
 			res.json(error.message);
 		}
 	});
 
-	//update a customer
+	//update an invoice
 	app.put(updateRoutes, authenticateToken, async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
@@ -104,7 +104,7 @@ const customers = (app) => {
 		}
 	});
 
-	//delete a customer
+	//delete an invoice
 	app.delete(deleteRoutes, authenticateToken, async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
@@ -134,4 +134,4 @@ const customers = (app) => {
 	});
 }
 
-module.exports = customers;
+module.exports = invoices;

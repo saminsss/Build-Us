@@ -65,7 +65,7 @@ const authenticate = (app) => {
 			const refreshRes = await authController.insertToken(refreshToken);
 
 			if (refreshRes.msg == "success") {
-				info.route = '/customers';
+				info.route = '/dashboard';
 				info.msg = "success";
 				info.accessToken = accessToken;
 				info.refreshToken = refreshToken;

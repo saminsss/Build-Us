@@ -39,7 +39,7 @@ const EmployeeRoute = ({ component: Component, ...rest }) => {
 				if (authenticated === true) {
 					//if user is either admin or employee then continue to component
 					if (role === 'A' || role === 'E') {
-						return <Component {...props} />
+						return <Component {...props} role={role} />
 					} else {
 						return role && <Redirect
 							to={{

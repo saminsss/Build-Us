@@ -4,13 +4,19 @@ import Home from "./screens/Home";
 import Dashboard from "./screens/Dashboard";
 import SignIn from "./screens/SignIn";
 import SignUp from "./screens/SignUp";
-import Customer from "./screens/Customer";
+import EmployeeList from "./screens/Employee"
+import CustomerList from "./screens/Customer";
+import InvoiceList from "./screens/Invoice";
 import Unauthorized from "./screens/Unauthorized";
 import NotFound from "./screens/NotFound"
+
+
 import AdminRoute from "./components/Routes/AdminRoute";
 import EmployeeRoute from "./components/Routes/EmployeeRoute";
 import DrawerLayout from "./components/App/DrawerLayout";
 import SimpleLayout from "./components/App/SimpleLayout";
+
+
 import { ThemeProvider, createTheme } from "@material-ui/core";
 
 const theme = createTheme({
@@ -37,10 +43,12 @@ const App = () => {
       <Router>
         <Switch>
 
-          <Route exact path={["/dashboard", "/customers"]}>
+          <Route exact path={["/dashboard", "/customers", "/employees", "/invoices"]}>
             <DrawerLayout>
               <AdminRoute exact path="/dashboard" component={Dashboard} />
-              <EmployeeRoute exact path="/customers" component={Customer} />
+              <AdminRoute exact path="/employees" component={EmployeeList} />
+              <EmployeeRoute exact path="/customers" component={CustomerList} />
+              <AdminRoute exact path="/invoices" component={InvoiceList} />
             </DrawerLayout>
           </Route>
 

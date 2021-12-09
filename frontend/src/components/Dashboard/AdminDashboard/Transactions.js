@@ -11,7 +11,7 @@ import {
 	Typography
 } from '@material-ui/core';
 import Cookies from 'js-cookie';
-import Authentication from '../Core/Authentication';
+import Authentication from '../../Core/Authentication';
 
 const Axios = axios.create();
 Authentication.setAuthentication(Axios); //set new auth tokens in req header everytime token expires

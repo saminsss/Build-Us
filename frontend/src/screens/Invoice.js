@@ -4,24 +4,26 @@ import {
 	Box,
 	Container
 } from '@material-ui/core';
-import getTableInfo from '../components/Customer/getTableInfo';
-import CustomerListResults from '../components/Shared/ListResults';
+import getTableInfo from '../components/Invoice/getTableInfo';
+import InvoiceListResults from '../components/Shared/ListResults';
+import InvoiceListToolbar from '../components/Shared/ListToolbar';
 import Cookies from 'js-cookie';
 import Authentication from '../components/Core/Authentication';
 
 const Axios = axios.create();
 Authentication.setAuthentication(Axios); //set new auth tokens in req header everytime token expires
 
-const CustomerList = () => {
-	const [customers, setCustomers] = useState([]);
+const InvoiceList = () => {
+	const [invoices, setInvoices] = useState([]);
 
 	useEffect(() => {
-		fetchCustomers();
+		fetchInvoices();
 	}, []);
 
-	const fetchCustomers = async () => {
-		const res = await Axios.get('/api/customers/' + Cookies.get('id')); //ID is required for auth
-		setCustomers(res.data);
+
+	const fetchInvoices = async () => {
+		const res = await Axios.get('/api/invoices/' + Cookies.get('id')); //ID is required for auth
+		setInvoices(res.data);
 	};
 
 	return (
@@ -34,9 +36,9 @@ const CustomerList = () => {
 				}}>
 				<Container maxWidth={false}>
 					<Box sx={{ pt: 3 }}>
-						<CustomerListResults
+						<InvoiceListResults
 							tableinfo={getTableInfo()}
-							data={customers} />
+							data={invoices} />
 					</Box>
 				</Container>
 			</Box>
@@ -44,4 +46,4 @@ const CustomerList = () => {
 	)
 };
 
-export default CustomerList;
+export default InvoiceList;

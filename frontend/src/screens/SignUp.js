@@ -45,7 +45,7 @@ const SignUp = (props) => {
 				password: password,
 				firstname: firstName,
 				lastname: lastName,
-				role: 'A'
+				role: 'A' //TODO temporary
 			});
 
 			props.history.push('/signin');

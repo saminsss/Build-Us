@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => {
   }
 });
 
-const ListToolbar = ({ searchIn, searchFilters, setList, setPage, button, placeholder, ...rest }) => {
+const ListToolbar = ({ searchIn, searchFilters, sortOptions, setList, setPage, button, placeholder, ...rest }) => {
   const styles = useStyles();
   const [searchValue, setSearchValue] = useState();
   const [sortBox, setSortBox] = useState(false);
@@ -60,12 +60,16 @@ const ListToolbar = ({ searchIn, searchFilters, setList, setPage, button, placeh
   const filter = () => {
     const filteredList = searchIn.filter((item) => {
       let filtered = false;
-      for (let key of searchFilters) {
-        if (key.includes('date'))
-          filtered = filtered || moment(item[key])?.format('MMMM Do, YYYY').toLowerCase().includes(searchValue?.toLowerCase());
-
-        else
-          filtered = filtered || item[key]?.toLowerCase().includes(searchValue?.toLowerCase());
+      for (let field of searchFilters) {
+        let searchInValue = '';
+        for (let rowdatakey of field['rowdatakeys']) {
+          const separator = field['separator'] ? field['separator'] : '';
+          if (rowdatakey.includes('date'))
+            searchInValue += moment(item[rowdatakey])?.format('MMMM Do, YYYY') + separator;
+          else
+            searchInValue += item[rowdatakey] + separator;
+        }
+        filtered = filtered || searchInValue.toLowerCase().includes(searchValue?.toLowerCase());
       }
       return filtered;
     });
@@ -131,7 +135,7 @@ const ListToolbar = ({ searchIn, searchFilters, setList, setPage, button, placeh
                 <SearchIcon />
                 Sort
               </Button>
-              {sortBox && <SortBox className={styles.sortBox} />}
+              {sortBox && <SortBox sortOptions={sortOptions} className={styles.sortBox} />}
             </Box>
 
 

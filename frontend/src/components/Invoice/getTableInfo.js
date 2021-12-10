@@ -3,32 +3,32 @@ const getTableInfo = () => {
 		{
 			headertitle: 'Name',
 			rowdatakeys: ['firstname', 'lastname'],
-			seperator: ' '
+			separator: ' '
 		},
 		{
 			headertitle: 'Email',
 			rowdatakeys: ['email'],
-			seperator: ''
+			separator: ''
 		},
 		{
 			headertitle: 'Amount',
 			rowdatakeys: ['amount'],
-			seperator: ''
+			separator: ''
 		},
 		{
 			headertitle: 'Issue Date',
 			rowdatakeys: ['issuedate'],
-			seperator: ''
+			separator: ''
 		},
 		{
 			headertitle: 'Due Date',
 			rowdatakeys: ['duedate'],
-			seperator: ''
+			separator: ''
 		},
 		{
 			headertitle: 'Status',
 			rowdatakeys: ['status'],
-			seperator: ''
+			separator: ''
 		},
 	];
 

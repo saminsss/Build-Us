@@ -23,10 +23,6 @@ const ListResults = ({ componentname, tableinfo, data, ...rest }) => {
 	const [page, setPage] = useState(0);
 
 	useEffect(() => {
-		buildSearchFilters(tableinfo);
-	}, [])
-
-	useEffect(() => {
 		setRowData(data);
 	}, [data]);
 
@@ -70,33 +66,46 @@ const ListResults = ({ componentname, tableinfo, data, ...rest }) => {
 		setPage(newPage);
 	};
 
-	const buildTableRowCells = (rowData, datakeys, seperator) => {
-		if (!seperator) seperator = '';
+	const buildTableRowCells = (rowData, datakeys, separator) => {
+		if (!separator) separator = '';
 
 		let completecell = '';
 		for (let key of datakeys) {
 			if (!rowData[key]) continue;
 			if (key.includes('date'))
-				completecell += moment(rowData[key]).format('MMMM Do, YYYY') + seperator
+				completecell += moment(rowData[key]).format('MMMM Do, YYYY') + separator
 			else
-				completecell += rowData[key] + seperator
+				completecell += rowData[key] + separator
 		}
-		return completecell.substring(0, completecell.length - seperator.length)
+		return completecell.substring(0, completecell.length - separator.length)
 	}
 
 	const buildSearchFilters = (tableinfo) => {
 		let searchFilters = [];
 		for (let info of tableinfo) {
-			searchFilters.push(...info.rowdatakeys)
+			searchFilters.push({ 'rowdatakeys': info.rowdatakeys, 'separator': info.separator })
 		}
 		return searchFilters;
 	}
+
+	const searchFilters = buildSearchFilters(tableinfo);
+
+	const buildSortOptions = (tableinfo) => {
+		let searchFilters = [];
+		for (let info of tableinfo) {
+			searchFilters.push({ 'option': info.headertitle, 'rowdatakey': info.rowdatakeys })
+		}
+		return searchFilters;
+	}
+
+	const sortOptions = buildSortOptions(tableinfo);
 
 	return (
 		<Box {...rest}>
 			<ListToolbar
 				searchIn={data}
-				searchFilters={buildSearchFilters(tableinfo)}
+				searchFilters={searchFilters}
+				sortOptions={sortOptions}
 				setList={setRowData}
 				setPage={setPage}
 				button={'Add ' + componentname}
@@ -142,7 +151,7 @@ const ListResults = ({ componentname, tableinfo, data, ...rest }) => {
 									</TableCell>
 									{tableinfo?.map((table, index) => (
 										<TableCell key={index}>
-											{buildTableRowCells(rowitem, table.rowdatakeys, table.seperator)}
+											{buildTableRowCells(rowitem, table.rowdatakeys, table.separator)}
 										</TableCell>
 									))}
 								</TableRow>

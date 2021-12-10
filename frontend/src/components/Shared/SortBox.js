@@ -2,10 +2,13 @@ import React from 'react';
 import {
 	Box,
 	Card,
-	List,
 	CardContent,
-	ListItemText,
-	ListItem,
+	FormControl,
+	FormLabel,
+	FormGroup,
+	FormControlLabel,
+	Switch,
+	FormHelperText,
 	makeStyles,
 } from '@material-ui/core';
 import axios from 'axios';
@@ -17,28 +20,34 @@ Authentication.setAuthentication(Axios); //set new auth tokens in req header eve
 const useStyles = makeStyles((theme) => {
 	return {
 		cardcontent: {
-			padding: theme.spacing(0),
+			padding: theme.spacing(2),
 			"&:last-child": {
-				paddingBottom: 0,
+				paddingBottom: theme.spacing(2),
 			},
 		},
 	}
 });
 
-function SortBox(props) {
+function SortBox({ sortOptions, ...rest }) {
 	const styles = useStyles();
 
 	return (
-		<Box {...props}>
+		<Box {...rest}>
 			<Card>
 				<CardContent className={styles.cardcontent}>
-					<List>
-						<ListItem>
-							<ListItemText>
-								Sort thi and that and stiff bla bla bla
-							</ListItemText>
-						</ListItem>
-					</List>
+					<FormControl component="fieldset" variant="standard">
+						<FormGroup>
+							{sortOptions.map((field, index) => {
+								return <FormControlLabel
+									key={index}
+									control={
+										<Switch checked={true} name={field['option']} />
+									}
+									label={field['option']}
+								/>
+							})}
+						</FormGroup>
+					</FormControl>
 				</CardContent>
 			</Card>
 		</Box>

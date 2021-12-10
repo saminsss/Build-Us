@@ -3,7 +3,7 @@ const getTableInfo = () => {
 		{
 			headertitle: 'Name',
 			rowdatakeys: ['firstname', 'lastname'],
-			seperator: ' '
+			separator: ' '
 		},
 		{
 			headertitle: 'Email',
@@ -12,7 +12,7 @@ const getTableInfo = () => {
 		{
 			headertitle: 'Address',
 			rowdatakeys: ['city', 'province', 'country'],
-			seperator: ', '
+			separator: ', '
 		},
 		{
 			headertitle: 'Phone',

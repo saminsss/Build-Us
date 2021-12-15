@@ -1,149 +1,130 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  InputAdornment,
-  makeStyles
+    Box,
+    Button,
+    Card,
+    CardContent,
+    TextField,
+    InputAdornment,
+    makeStyles
 } from '@material-ui/core';
 
 import SearchIcon from '@mui/icons-material/Search';
-import SortBox from './SortBox';
 
 import moment from 'moment';
 
 
 const useStyles = makeStyles((theme) => {
-  return {
-    button: {
-      marginLeft: theme.spacing(0.75),
-      marginRight: theme.spacing(0.75)
-    },
-    searchBox: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(3)
-    },
-    searchCard: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    },
-    searchBar: {
-      minWidth: '35%',
-    },
-    sortButtonBox: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-    },
-    sortBox: {
-      display: 'block',
-      position: 'absolute',
-      marginTop: theme.spacing(5),
-      marginRight: theme.spacing(0.25),
-      minWidth: 200
+    return {
+        buttonBar: {
+            display: 'flex',
+            justifyContent: 'flex-end'
+        },
+        button: {
+            marginLeft: theme.spacing(0.75),
+            marginRight: theme.spacing(0.75)
+        },
+        box: {
+            marginTop: theme.spacing(3),
+            marginBottom: theme.spacing(3)
+        },
+        card: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+        },
+        searchBar: {
+            width: '60%',
+        },
     }
-  }
 });
 
-const ListToolbar = ({ searchIn, searchFilters, sortOptions, setList, setPage, button, placeholder, ...rest }) => {
-  const styles = useStyles();
-  const [searchValue, setSearchValue] = useState();
-  const [sortBox, setSortBox] = useState(false);
+const ListToolbar = ({ searchData, searchFilters, setList, setPage, addButtonText = 'Add data', searchBarPlaceholder = 'Search data', ...rest }) => {
+    const styles = useStyles();
+    const [filteredData, setFilteredData] = useState([]);
+    const [searchValue, setSearchValue] = useState();
 
-  useEffect(() => {
-    filter();
-  }, [searchValue]);
+    useEffect(() => {
+        setFilteredData(searchData)
+    }, [searchData]);
 
-  const filter = () => {
-    const filteredList = searchIn.filter((item) => {
-      let filtered = false;
-      for (let field of searchFilters) {
-        let searchInValue = '';
-        for (let rowdatakey of field['rowdatakeys']) {
-          const separator = field['separator'] ? field['separator'] : '';
-          if (rowdatakey.includes('date'))
-            searchInValue += moment(item[rowdatakey])?.format('MMMM Do, YYYY') + separator;
-          else
-            searchInValue += item[rowdatakey] + separator;
+    useEffect(() => {
+        setList(filteredData);
+    }, [filteredData, setList]);
+
+    useEffect(() => {
+        const filter = () => {
+            const filteredList = searchData.filter((item) => {
+                let filtered = false;
+                for (let field of searchFilters) {
+                    let searchInValue = '';
+                    for (let rowdatakey of field['rowdatakeys']) {
+                        const separator = field['separator'] ? field['separator'] : '';
+                        if (rowdatakey.includes('date'))
+                            searchInValue += moment(item[rowdatakey])?.format('MMMM Do, YYYY') + separator;
+                        else
+                            searchInValue += item[rowdatakey] + separator;
+                    }
+                    filtered = filtered || searchInValue.toLowerCase().includes(searchValue?.toLowerCase());
+                }
+                return filtered;
+            });
+
+            setFilteredData(filteredList);
         }
-        filtered = filtered || searchInValue.toLowerCase().includes(searchValue?.toLowerCase());
-      }
-      return filtered;
-    });
 
-    setList(filteredList);
-  }
+        filter();
+    }, [searchValue]);
 
-  const handleOnChange = (e) => {
-    setSearchValue(e.target.value);
-    setPage(0);
-  }
+    const handleOnChange = (e) => {
+        setSearchValue(e.target.value);
+        setPage(0);
+    }
 
-  const toggleSortBox = () => {
-    setSortBox(!sortBox);
-  }
-
-  return (
-    <Box {...rest}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end'
-        }}
-      >
-        <Button className={styles.button}>
-          Import
-        </Button>
-        <Button className={styles.button}>
-          Export
-        </Button>
-        <Button
-          className={styles.button}
-          color="secondary"
-          variant="contained"
-        >
-          {button ? button : "Add"}
-        </Button>
-      </Box>
-      <Box className={styles.searchBox}>
-        <Card>
-          <CardContent className={styles.searchCard}>
-            <Box className={styles.searchBar}>
-              <TextField
-                fullWidth
-                value={searchValue}
-                onChange={e => handleOnChange(e)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position='start'>
-                      <SearchIcon />
-                    </InputAdornment>
-                  )
-                }}
-                placeholder={placeholder}
-                variant="outlined"
-              />
+    return (
+        <Box {...rest}>
+            <Box
+                className={styles.buttonBar}
+            >
+                <Button className={styles.button}>
+                    Import
+                </Button>
+                <Button className={styles.button}>
+                    Export
+                </Button>
+                <Button
+                    className={styles.button}
+                    color="secondary"
+                    variant="contained"
+                >
+                    {addButtonText}
+                </Button>
             </Box>
-            <Box className={styles.sortButtonBox}>
-              <Button
-                variant='outlined'
-                onClick={() => toggleSortBox()}
-              >
-                <SearchIcon />
-                Sort
-              </Button>
-              {sortBox && <SortBox sortOptions={sortOptions} className={styles.sortBox} />}
+            <Box className={styles.box}>
+                <Card>
+                    <CardContent className={styles.card}>
+                        <Box className={styles.searchBar}>
+                            <TextField
+                                fullWidth
+                                value={searchValue}
+                                onChange={e => handleOnChange(e)}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position='start'>
+                                            <SearchIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                placeholder={searchBarPlaceholder}
+                                variant="outlined"
+                            />
+                        </Box>
+                    </CardContent>
+                </Card>
             </Box>
-
-
-          </CardContent>
-        </Card>
-      </Box>
-    </Box>
-  )
+        </Box>
+    )
 };
 
 export default ListToolbar;

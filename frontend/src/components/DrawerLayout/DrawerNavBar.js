@@ -1,73 +1,61 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-	AppBar,
-	Toolbar,
-	Avatar,
+	Box,
+	Drawer,
+	Typography,
 	makeStyles,
 } from '@material-ui/core'
 
-import AccountBox from './AccountBox';
+import getDrawerContents from './Functions/getDrawerContents';
+import DrawerList from './DrawerList';
 
-
-const drawerWidth = 240;
-const useStyles = makeStyles((theme) => {
-	return {
-		appbar: {
-			display: 'flex',
-			alignItems: 'end',
-			width: `calc(100% - ${drawerWidth}px)`,
-			marginLeft: `${drawerWidth}px`,
-			transition: theme.transitions.create(['margin', 'width'], {
-				easing: theme.transitions.easing.easeOut,
-				duration: theme.transitions.duration.enteringScreen,
-			}),
-			backgroundColor: 'white',
-			boxShadow: '0px 1px 0px 0px rgba(200, 200, 200, .6)'
-		},
-		avatar: {
-			marginLeft: theme.spacing(1),
-			backgroundColor: theme.palette.secondary.dark,
-			'&:hover': {
-				cursor: 'pointer'
+function DrawerBar({ user, drawerWidth, drawerType, drawerAnchor, setDrawerOpen, drawerOpen }) {
+	const useStyles = makeStyles((theme) => {
+		return {
+			drawer: {
+				width: drawerWidth
 			},
-		},
-		accountBox: {
-			display: 'block',
-			position: 'absolute',
-			marginTop: theme.spacing(8.5),
-			marginRight: theme.spacing(0.25),
+			drawerPaper: {
+				background: theme.palette.secondary.main,
+				color: theme.palette.primary.main,
+				padding: theme.spacing(1),
+				width: drawerWidth,
+			},
+			title: {
+				display: 'flex',
+				justifyContent: 'space-between',
+				alignItems: 'center',
+				padding: theme.spacing(2)
+			},
 		}
-	}
-});
-
-function DrawerNavBar({ user }) {
+	});
 
 	const styles = useStyles();
 
+	const [list, setList] = useState([]);
 
-	const [accountBox, setAccountBox] = useState(false);
-
-	const openAccountCard = () => {
-		setAccountBox(!accountBox);
-	}
+	useEffect(() => {
+		setList(getDrawerContents(user));
+	}, [user])
 
 	return (
-		<AppBar
-			className={styles.appbar}
-			elevation={0}
+		<Drawer
+			className={styles.drawer}
+			classes={{ paper: styles.drawerPaper }}
+			variant={drawerType}
+			open={drawerOpen}
+			anchor={drawerAnchor}
+			onClose={() => setDrawerOpen(false)}
 		>
-			<Toolbar>
-				<Avatar
-					className={styles.avatar}
-					onClick={() => openAccountCard()}
-				>
-					{user?.email[0].toUpperCase()}
-				</Avatar>
+			<Box className={styles.title}>
+				<Typography variant='h5'>
+					Drawer
+				</Typography>
+			</Box>
 
-			</Toolbar>
-			{accountBox && <AccountBox user={user} className={styles.accountBox}></AccountBox>}
-		</AppBar>
+			<DrawerList list={list} />
+		</Drawer>
 	)
 }
 
-export default DrawerNavBar;
+export default DrawerBar;

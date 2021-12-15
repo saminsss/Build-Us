@@ -1,31 +1,27 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import {
 	Box,
 	Container
 } from '@material-ui/core';
 import getTableInfo from '../components/Employee/getTableInfo';
 import EmployeeListResults from '../components/Shared/ListResults';
-import Cookies from 'js-cookie';
-import Authentication from '../components/Core/Authentication';
 
-const Axios = axios.create();
-Authentication.setAuthentication(Axios); //set new auth tokens in req header everytime token expires
-
-const EmployeeList = () => {
+const EmployeeList = ({ id, axios }) => {
 	const [employees, setEmployees] = useState([]);
 	const [tableInfo, setTableInfo] = useState([]);
 
 	useEffect(() => {
+		const fetchEmployees = async () => {
+			const res = await axios.get('/api/employees/' + id); //ID is required for auth
+			setEmployees(res.data);
+		};
+
 		fetchEmployees();
 		setTableInfo(getTableInfo());
-	}, []);
+	}, [id, axios]);
 
 
-	const fetchEmployees = async () => {
-		const res = await Axios.get('/api/employees/' + Cookies.get('id')); //ID is required for auth
-		setEmployees(res.data);
-	};
+
 
 	return (
 		<Box sx={{
@@ -35,14 +31,16 @@ const EmployeeList = () => {
 				sx={{
 					py: 3
 				}}>
-				<Container maxWidth={false}>
-					<Box sx={{ pt: 3 }}>
-						<EmployeeListResults
-							componentname={'employees'}
-							tableinfo={tableInfo}
-							data={employees} />
-					</Box>
-				</Container>
+				{employees &&
+					<Container maxWidth={false}>
+						<Box sx={{ pt: 3 }}>
+							<EmployeeListResults
+								componentname={'employees'}
+								tableinfo={tableInfo}
+								data={employees} />
+						</Box>
+					</Container>
+				}
 			</Box>
 		</Box>
 	)

@@ -13,7 +13,7 @@ const signUpRoutes = ["/auth/signup"];
 const refreshRoutes = ["/auth/refresh"];
 
 function generateAccessToken(id) {
-	return jwt.sign(id, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
+	return jwt.sign(id, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
 }
 
 function generateRefreshToken(id) {

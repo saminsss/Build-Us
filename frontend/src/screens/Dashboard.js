@@ -4,7 +4,6 @@ import CustomerDashboard from '../components/Dashboard/CustomerDashboard';
 
 const Dashboard = (props) => {
 	const { role } = props;
-	console.log(role)
 	let dashboard = 'Loading';
 	if (role === 'A')
 		dashboard = <AdminDashboard />

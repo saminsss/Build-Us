@@ -4,32 +4,29 @@ import Authentication from '../Core/Authentication';
 import { Route, Redirect } from 'react-router';
 import Cookies from 'js-cookie'
 
-const Axios = axios.create();
-Authentication.setAuthentication(Axios);
 
 const AdminRoute = ({ component: Component, ...rest }) => {
-	const [role, setRole] = useState('');
+	const [id, setId] = useState();
+	const [role, setRole] = useState();
 
 	useEffect(() => {
-		const getRole = async () => {
-			try {
-				const id = Cookies.get('id');
-				if (!id) return;
-
-				const res = await Axios.get('/api/users/' + id,
-					{
-						params: { id: id }
-					}
-				)
-				const role = res.data[0]?.role;
-				setRole(() => (role));
-			} catch (err) {
-				console.log(err);
-			}
-		}
-
 		getRole();
-	}, [])
+	}, []);
+
+	const getRole = async () => {
+		const Axios = axios.create();
+		Authentication.setAuthentication(Axios);
+
+		const id = Cookies.get('id');
+		const res = await Axios.get('/api/users/' + id,
+			{
+				params: { id: id }
+			}
+		);
+		setId(() => (id));
+		const role = res.data[0]?.role;
+		setRole(() => (role));
+	};
 
 	return (
 		<Route
@@ -38,7 +35,9 @@ const AdminRoute = ({ component: Component, ...rest }) => {
 				const authenticated = Authentication.isAuthenticated();
 				if (authenticated === true) {
 					if (role === 'A') {
-						return <Component {...props} role={role} />
+						const Axios = axios.create();
+						Authentication.setAuthentication(Axios);
+						return <Component {...props} id={id} role={role} axios={Axios} />
 					} else {
 						return role && <Redirect
 							to={{

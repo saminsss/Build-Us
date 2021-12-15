@@ -3,24 +3,48 @@ import PropTypes from 'prop-types';
 import {
 	Avatar,
 	Box,
+	Button,
 	Card,
 	Checkbox,
 	Table,
+	TableContainer,
 	TableBody,
 	TableCell,
 	TableHead,
 	TablePagination,
 	TableRow,
-	Typography
+	Typography,
+	makeStyles
 } from '@material-ui/core';
 import ListToolbar from '../Shared/ListToolbar';
+import SortIcon from '@mui/icons-material/Sort';
 import moment from 'moment';
 
-const ListResults = ({ componentname, tableinfo, data, ...rest }) => {
+const useStyles = makeStyles((theme) => {
+	return {
+		table: {
+			backgroundColor: theme.palette.primary.light
+		},
+		tableHeader: {
+			display: 'flex',
+			justifyContent: 'flex-start',
+			alignItems: 'center'
+		},
+		sortButton: {
+			maxWidth: theme.spacing(1),
+			minWidth: theme.spacing(1),
+			marginLeft: theme.spacing(1.25)
+		},
+	}
+});
+
+const ListResults = ({ componentname = 'component', tableinfo, data, ...rest }) => {
+	const styles = useStyles();
 	const [rowData, setRowData] = useState([]);
 	const [selectedRows, setSelectedRows] = useState([]);
 	const [limit, setLimit] = useState(10);
 	const [page, setPage] = useState(0);
+	const [sortOrder, setSortOrder] = useState({});
 
 	useEffect(() => {
 		setRowData(data);
@@ -78,44 +102,51 @@ const ListResults = ({ componentname, tableinfo, data, ...rest }) => {
 				completecell += rowData[key] + separator
 		}
 		return completecell.substring(0, completecell.length - separator.length)
-	}
+	};
 
-	const buildSearchFilters = (tableinfo) => {
-		let searchFilters = [];
-		for (let info of tableinfo) {
-			searchFilters.push({ 'rowdatakeys': info.rowdatakeys, 'separator': info.separator })
-		}
-		return searchFilters;
-	}
+	/**Sorts the rowData according to the sort order
+	 * @param rowdatakeys the keys that make up each table cell for each row
+	 * @param sortOrder the order in which the rows are sorted, true - descending, false - ascending
+	**/
+	const sort = (rowdatakeys, sortOrder = false) => {
+		const sortedList = rowData.sort((a, b) => {
+			let sortByValueA = '';
+			let sortByValueB = '';
+			for (let rowdatakey of rowdatakeys) {
 
-	const searchFilters = buildSearchFilters(tableinfo);
+				if (rowdatakey.includes('date')) {
+					sortByValueA += moment(a[rowdatakey])?.format('YYYYMMDD');
+					sortByValueB += moment(b[rowdatakey])?.format('YYYYMMDD');
+				}
+				else {
+					sortByValueA += a[rowdatakey]
+					sortByValueB += b[rowdatakey]
+				}
+			}
+			if (sortOrder === false)
+				return sortByValueA.localeCompare(sortByValueB);
+			else
+				return sortByValueB.localeCompare(sortByValueA);
+		});
 
-	const buildSortOptions = (tableinfo) => {
-		let searchFilters = [];
-		for (let info of tableinfo) {
-			searchFilters.push({ 'option': info.headertitle, 'rowdatakey': info.rowdatakeys })
-		}
-		return searchFilters;
-	}
-
-	const sortOptions = buildSortOptions(tableinfo);
+		setRowData([...sortedList]);
+	};
 
 	return (
 		<Box {...rest}>
 			<ListToolbar
-				searchIn={data}
-				searchFilters={searchFilters}
-				sortOptions={sortOptions}
+				searchData={data}
+				searchFilters={tableinfo}
 				setList={setRowData}
 				setPage={setPage}
-				button={'Add ' + componentname}
-				placeholder={'Search ' + componentname}
+				addButtonText={'Add ' + componentname}
+				searchBarPlaceholder={'Search ' + componentname}
 			/>
 
 			<Card>
-				<Box>
+				<TableContainer>
 					<Table>
-						<TableHead>
+						<TableHead className={styles.table} stickyHeader>
 							<TableRow>
 								<TableCell padding="checkbox">
 									<Checkbox
@@ -130,7 +161,19 @@ const ListResults = ({ componentname, tableinfo, data, ...rest }) => {
 								</TableCell>
 								{tableinfo?.map((table, index) => (
 									<TableCell key={index}>
-										{table.headertitle}
+										<Box className={styles.tableHeader}>
+											{table.headertitle}
+											<Button
+												className={styles.sortButton}
+												variant='outlined'
+												onClick={() => {
+													setSortOrder({ [table.headertitle]: !sortOrder[table.headertitle] })
+													return sort(table.rowdatakeys, sortOrder[table.headertitle])
+												}}
+											>
+												<SortIcon />
+											</Button>
+										</Box>
 									</TableCell>
 								))}
 							</TableRow>
@@ -158,9 +201,9 @@ const ListResults = ({ componentname, tableinfo, data, ...rest }) => {
 							))}
 						</TableBody>
 					</Table>
-				</Box>
+				</TableContainer>
 				<TablePagination
-					component="div"
+					component='div'
 					count={rowData.length}
 					onPageChange={handlePageChange}
 					onRowsPerPageChange={handleLimitChange}

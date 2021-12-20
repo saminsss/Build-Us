@@ -5,8 +5,11 @@ import {
 	useTheme,
 	useMediaQuery
 } from '@material-ui/core'
+
 import DrawerAppBar from '../DrawerLayout/DrawerAppBar';
 import DrawerNavBar from '../DrawerLayout/DrawerNavBar';
+import getDrawerContents from '../DrawerLayout/Functions/getDrawerContents';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Authentication from '../Core/Authentication';
@@ -79,7 +82,7 @@ function DrawerLayout({ children }) {
 				/>}
 			{user &&
 				<DrawerNavBar
-					user={user}
+					list={getDrawerContents(user)}
 					drawerWidth={220}
 					drawerType={drawerType}
 					drawerAnchor={drawerAnchor}

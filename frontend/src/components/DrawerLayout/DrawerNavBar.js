@@ -6,10 +6,9 @@ import {
 	makeStyles,
 } from '@material-ui/core'
 
-import getDrawerContents from './Functions/getDrawerContents';
 import DrawerList from './DrawerList';
 
-function DrawerBar({ user, drawerWidth, drawerType, drawerAnchor, setDrawerOpen, drawerOpen }) {
+function DrawerBar({ list, drawerWidth, drawerType, drawerAnchor, setDrawerOpen, drawerOpen }) {
 	const useStyles = makeStyles((theme) => {
 		return {
 			drawer: {
@@ -31,12 +30,6 @@ function DrawerBar({ user, drawerWidth, drawerType, drawerAnchor, setDrawerOpen,
 	});
 
 	const styles = useStyles();
-
-	const [list, setList] = useState([]);
-
-	useEffect(() => {
-		setList(getDrawerContents(user));
-	}, [user])
 
 	return (
 		<Drawer

@@ -1,4 +1,8 @@
-import { Box, Container, Grid } from '@material-ui/core';
+import {
+	Box,
+	Container,
+	Grid
+} from '@material-ui/core';
 import Budget from './AdminDashboard/Budget';
 import Transactions from './AdminDashboard/Transactions'
 // import LatestOrders from '../components/Dashboard/LatestOrders';
@@ -18,10 +22,7 @@ const AdminDashboard = (props) => (
 		<Box sx={{
 			py: 3,
 		}}>
-			<Box sx={{
-				pl: 1,
-				pr: 1
-			}}>
+			<Container>
 				<Grid
 					container
 					spacing={2}
@@ -72,7 +73,7 @@ const AdminDashboard = (props) => (
 						<Transactions />
 					</Grid>
 				</Grid>
-			</Box>
+			</Container>
 		</Box>
 
 	</Box>

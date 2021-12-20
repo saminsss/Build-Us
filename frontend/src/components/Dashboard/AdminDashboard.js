@@ -19,7 +19,7 @@ const AdminDashboard = (props) => (
 			py: 3,
 		}}>
 			<Box sx={{
-				pl: 3,
+				pl: 1,
 				pr: 1
 			}}>
 				<Grid

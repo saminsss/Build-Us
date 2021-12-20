@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => {
 	}
 });
 
-function DrawerListItems({ list }) {
+function DrawerListItems({ list, setDrawerOpen }) {
 	const styles = useStyles();
 
 	const [state, setState] = useState({});
@@ -59,7 +59,12 @@ function DrawerListItems({ list }) {
 		setState(prevState => {
 			return { ...prevState, [e]: !state[e] };
 		});
-	}
+	};
+
+	const handleNavigate = (path) => {
+		history.push(path);
+		setDrawerOpen(false);
+	};
 
 	return (
 		<List>
@@ -71,7 +76,7 @@ function DrawerListItems({ list }) {
 							key={index}>
 							<ListItem
 								button
-								onClick={() => item.subitems ? handleClick(item.name) : history.push(item.path)}
+								onClick={() => item.subitems ? handleClick(item.name) : handleNavigate(item.path)}
 								className={location.pathname === item.path ? styles.active : styles.inactive}
 							>
 								<ListItemIcon className={styles.icon}>
@@ -88,7 +93,7 @@ function DrawerListItems({ list }) {
 								<Collapse key={index} in={state[item.name]} timeout="auto" unmountOnExit>
 									<ListItem
 										button
-										onClick={() => history.push(subitem.path)}
+										onClick={() => handleNavigate(subitem.path)}
 										className={location.pathname === subitem.path ? styles.active : styles.inactive}
 									>
 										<ListItemIcon className={styles.icon}>

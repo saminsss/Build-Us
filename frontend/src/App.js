@@ -20,52 +20,52 @@ import SimpleLayout from "./components/App/SimpleLayout";
 import { ThemeProvider, createTheme } from "@material-ui/core";
 
 const theme = createTheme({
-  typography: {
-    fontFamily: [
-      'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Helvetica', 'Arial', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"'
-    ].join(','),
-  },
-  palette: {
-    primary: {
-      main: 'rgb(250, 250, 250)',
-      contrastText: 'rgb(50, 125, 200)'
-    },
-    secondary: {
-      main: 'rgb(10, 20, 35)',
-      light: 'rgb(35, 45, 65)',
-    },
-  },
+	typography: {
+		fontFamily: [
+			'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Helvetica', 'Arial', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"'
+		].join(','),
+	},
+	palette: {
+		primary: {
+			main: 'rgb(250, 250, 250)',
+			contrastText: 'rgb(50, 125, 200)'
+		},
+		secondary: {
+			main: 'rgb(10, 20, 35)',
+			light: 'rgb(35, 45, 65)',
+		},
+	},
 });
 
 const App = () => {
-  return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Switch>
+	return (
+		<ThemeProvider theme={theme}>
+			<Router>
+				<Switch>
 
-          <Route exact path={["/dashboard", "/customers", "/employees", "/invoices"]}>
-            <DrawerLayout>
-              <AdminRoute exact path="/dashboard" component={Dashboard} />
-              <AdminRoute exact path="/employees" component={EmployeeList} />
-              <EmployeeRoute exact path="/customers" component={CustomerList} />
-              <AdminRoute exact path="/invoices" component={InvoiceList} />
-            </DrawerLayout>
-          </Route>
+					<Route exact path={["/dashboard", "/customers", "/employees", "/invoices"]}>
+						<DrawerLayout>
+							<AdminRoute exact path="/dashboard" component={Dashboard} />
+							<AdminRoute exact path="/employees" component={EmployeeList} />
+							<EmployeeRoute exact path="/customers" component={CustomerList} />
+							<AdminRoute exact path="/invoices" component={InvoiceList} />
+						</DrawerLayout>
+					</Route>
 
-          <Route exact path={["/", "/signin", "/signup", "/unauthorized"]}>
-            <SimpleLayout>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/signin" component={SignIn} />
-              <Route exact path="/signup" component={SignUp} />
-              <Route exact path="/unauthorized" component={Unauthorized} />
-            </SimpleLayout>
-          </Route>
-          <Route exact path="/*" component={NotFound} />
+					<Route exact path={["/", "/signin", "/signup", "/unauthorized"]}>
+						<SimpleLayout>
+							<Route exact path="/" component={Home} />
+							<Route exact path="/signin" component={SignIn} />
+							<Route exact path="/signup" component={SignUp} />
+							<Route exact path="/unauthorized" component={Unauthorized} />
+						</SimpleLayout>
+					</Route>
+					<Route exact path="/*" component={NotFound} />
 
-        </Switch>
-      </Router>
-    </ThemeProvider >
-  );
+				</Switch>
+			</Router>
+		</ThemeProvider >
+	);
 }
 
 export default App;

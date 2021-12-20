@@ -3,6 +3,10 @@ const getNavBarContents = () => {
 	const list =
 		[
 			{
+				name: 'Home',
+				path: '/'
+			},
+			{
 				name: 'Features',
 				path: '/features'
 			},

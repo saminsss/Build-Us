@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Avatar,
 	Box,
 	Button,
 	Card,
@@ -13,7 +12,6 @@ import {
 	TableHead,
 	TablePagination,
 	TableRow,
-	Typography,
 	makeStyles
 } from '@material-ui/core';
 import ListToolbar from '../Shared/ListToolbar';

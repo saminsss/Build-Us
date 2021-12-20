@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => {
 		root: {
 			display: 'block',
 			position: 'absolute',
-			minWidth: theme.spacing(35),
+			minWidth: theme.spacing(28),
 			borderRadius: 20
 		},
 		cardcontent: {
@@ -52,7 +52,7 @@ function MenuBox({ items }) {
 								classes={{ root: styles.listitem }}
 							>
 								<ListItemText>
-									<Typography style={{ fontWeight: 375 }} variant='subtitle2'>
+									<Typography variant='subtitle2'>
 										{item.name}
 									</Typography>
 								</ListItemText>

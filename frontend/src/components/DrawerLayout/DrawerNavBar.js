@@ -53,7 +53,10 @@ function DrawerBar({ user, drawerWidth, drawerType, drawerAnchor, setDrawerOpen,
 				</Typography>
 			</Box>
 
-			<DrawerList list={list} />
+			<DrawerList
+				list={list}
+				setDrawerOpen={setDrawerOpen}
+			/>
 		</Drawer>
 	)
 }

@@ -8,13 +8,33 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Cookies from '../components/Core/Cookie';
+import {
+	Box,
+	makeStyles
+} from '@material-ui/core'
 
 const Axios = axios.create();
+
+const useStyles = makeStyles((theme) => {
+	return {
+		root: {
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'center',
+			alignItems: 'center',
+			alignSelf: 'center',
+			margin: '0 0 0 0',
+			padding: '20px 0 0 0',
+			height: '100vh',
+			overflow: 'auto',
+			backgroundColor: theme.palette.primary.main
+		},
+	}
+});
 
 const Copyright = (props) => {
 	return (
@@ -30,6 +50,8 @@ const Copyright = (props) => {
 }
 
 const SignIn = (props) => {
+	const styles = useStyles();
+
 	const [email, setEmail] = useState('');
 	const [emailError, setEmailError] = useState('');
 	const [password, setPassword] = useState('');
@@ -41,10 +63,10 @@ const SignIn = (props) => {
 		let cookie = Cookies(remember);
 
 		try {
+			if (errorsExist(email)) return;
+
 			cookie.set('remember', remember);
 			event.preventDefault();
-
-			if (errorsExist(email)) return;
 
 			const res = await Axios.post('/auth/signin', {
 				email: email,
@@ -79,7 +101,7 @@ const SignIn = (props) => {
 	const errorsExist = (email) => {
 		let error = false;
 		if (!validEmail(email)) {
-			setEmailError('Email address is not a valid email address');
+			setEmailError('Email address is not valid');
 			error = true;
 		} else {
 			setEmailError('');
@@ -93,19 +115,7 @@ const SignIn = (props) => {
 	}
 
 	return (
-		<Box
-			sx={{
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'center',
-				alignItems: 'center',
-				alignSelf: 'center',
-				margin: '0 0 0 0',
-				padding: '20px 0 0 0',
-				height: '100vh',
-				overflow: 'auto'
-			}}
-		>
+		<Box className={styles.root}>
 			<CssBaseline />
 			<Container component="main" maxWidth="xs">
 				<Box
@@ -135,7 +145,11 @@ const SignIn = (props) => {
 							autoComplete="email"
 							autoFocus
 							value={email}
-							onChange={e => setEmail(e.target.value)}
+							onChange={e => {
+								setEmailError('');
+								setPasswordError('');
+								return setEmail(e.target.value);
+							}}
 						/>
 						<TextField
 							label="Password"
@@ -148,7 +162,11 @@ const SignIn = (props) => {
 							fullWidth
 							autoComplete="current-password"
 							value={password}
-							onChange={e => setPassword(e.target.value)}
+							onChange={e => {
+								setEmailError('');
+								setPasswordError('');
+								return setPassword(e.target.value);
+							}}
 						/>
 						<FormControlLabel
 							control={<Checkbox value={remember} color="primary" onChange={e => setRemember(e.target.checked)} />}

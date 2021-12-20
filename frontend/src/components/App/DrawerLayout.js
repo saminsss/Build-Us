@@ -15,7 +15,7 @@ import Authentication from '../Core/Authentication';
 const Axios = axios.create();
 Authentication.setAuthentication(Axios); //set new auth tokens in req header everytime token expires
 
-function DrawerLayout(props) {
+function DrawerLayout({ children }) {
 	const [user, setUser] = useState();
 	const [drawerWidth, setDrawerWidth] = useState(220);
 	const [drawerType, setDrawerType] = useState('permanent');
@@ -69,15 +69,26 @@ function DrawerLayout(props) {
 		setUser(res.data[0]);
 	};
 
-
-
 	return (
 		<Box className={styles.root}>
-			{user && <DrawerAppBar user={user} drawerWidth={drawerWidth} setDrawerOpen={setDrawerOpen} />}
-			{user && <DrawerNavBar user={user} drawerWidth={220} drawerType={drawerType} drawerAnchor={drawerAnchor} setDrawerOpen={setDrawerOpen} drawerOpen={drawerOpen} />}
+			{user &&
+				<DrawerAppBar
+					user={user}
+					drawerWidth={drawerWidth}
+					setDrawerOpen={setDrawerOpen}
+				/>}
+			{user &&
+				<DrawerNavBar
+					user={user}
+					drawerWidth={220}
+					drawerType={drawerType}
+					drawerAnchor={drawerAnchor}
+					setDrawerOpen={setDrawerOpen}
+					drawerOpen={drawerOpen}
+				/>}
 			<Box className={styles.page}>
 				<Box className={styles.toolbar}></Box>
-				{props.children}
+				{children}
 			</Box>
 		</Box >
 	)

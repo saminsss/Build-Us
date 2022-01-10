@@ -37,7 +37,7 @@ const EmployeeRoute = ({ component: Component, ...rest }) => {
 					if (role === 'A' || role === 'E') {
 						const Axios = axios.create();
 						Authentication.setAuthentication(Axios);
-						return <Component {...props} id={id} role={role} axios={Axios} />
+						return <Component {...rest} id={id} role={role} axios={Axios} />
 					} else {
 						return role && <Redirect
 							to={{

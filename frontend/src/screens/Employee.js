@@ -15,13 +15,9 @@ const EmployeeList = ({ id, axios }) => {
 			const res = await axios.get('/api/employees/' + id); //ID is required for auth
 			setEmployees(res.data);
 		};
-
 		fetchEmployees();
 		setTableInfo(getTableInfo());
 	}, [id, axios]);
-
-
-
 
 	return (
 		<Box sx={{
@@ -35,7 +31,7 @@ const EmployeeList = ({ id, axios }) => {
 					<Container maxWidth={false}>
 						<Box sx={{ pt: 3 }}>
 							<EmployeeListResults
-								componentname={'employees'}
+								routename={'employees'}
 								tableinfo={tableInfo}
 								data={employees} />
 						</Box>

@@ -9,6 +9,7 @@ import {
     InputAdornment,
     makeStyles
 } from '@material-ui/core';
+import { useHistory } from 'react-router';
 
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -40,20 +41,21 @@ const useStyles = makeStyles((theme) => {
     }
 });
 
-const ListToolbar = ({ searchData, searchFilters, setList, setPage, addButtonText = 'Add data', searchBarPlaceholder = 'Search data', ...rest }) => {
+const ListToolbar = ({ searchData, searchFilters, setFilteredData, setPage, routename = 'route', ...rest }) => {
     const styles = useStyles();
-    const [filteredData, setFilteredData] = useState([]);
     const [searchValue, setSearchValue] = useState();
+
+    const history = useHistory();
 
     useEffect(() => {
         setFilteredData(searchData)
-    }, [searchData]);
+    }, [searchData, setFilteredData]);
 
     useEffect(() => {
-        setList(filteredData);
-    }, [filteredData, setList]);
 
-    useEffect(() => {
+        /**
+         * Filters the data and sets the filtered data using the callback function setFilteredData
+         */
         const filter = () => {
             const filteredList = searchData.filter((item) => {
                 let filtered = false;
@@ -75,12 +77,12 @@ const ListToolbar = ({ searchData, searchFilters, setList, setPage, addButtonTex
         }
 
         filter();
-    }, [searchValue]);
+    }, [searchValue, searchData, searchFilters, setFilteredData]);
 
     const handleOnChange = (e) => {
         setSearchValue(e.target.value);
         setPage(0);
-    }
+    };
 
     return (
         <Box {...rest}>
@@ -97,8 +99,12 @@ const ListToolbar = ({ searchData, searchFilters, setList, setPage, addButtonTex
                     className={styles.button}
                     color="secondary"
                     variant="contained"
+                    onClick={() => history.push({
+                        pathname: '/add',
+                        state: { routename: routename }
+                    })}
                 >
-                    {addButtonText}
+                    {'Add ' + routename}
                 </Button>
             </Box>
             <Box className={styles.box}>
@@ -116,7 +122,7 @@ const ListToolbar = ({ searchData, searchFilters, setList, setPage, addButtonTex
                                         </InputAdornment>
                                     )
                                 }}
-                                placeholder={searchBarPlaceholder}
+                                placeholder={'Search ' + routename}
                                 variant="outlined"
                             />
                         </Box>

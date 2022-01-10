@@ -32,7 +32,7 @@ const InvoiceList = ({ id, axios }) => {
 					<Container maxWidth={false}>
 						<Box sx={{ pt: 3 }}>
 							<InvoiceListResults
-								componentname={'invoices'}
+								routename={'invoices'}
 								tableinfo={tableInfo}
 								data={invoices} />
 						</Box>

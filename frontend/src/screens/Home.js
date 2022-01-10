@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => {
 		},
 		introBackground: {
 			minWidth: '100%',
-			minHeight: '95vh',
+			minHeight: '93vh',
 			backgroundColor: '#54a3f1',
 			borderRadius: '0px 0px 250% 0px',
 			zIndex: -10

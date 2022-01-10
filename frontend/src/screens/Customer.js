@@ -31,7 +31,7 @@ const CustomerList = ({ id, axios }) => {
 					<Container maxWidth={false}>
 						<Box sx={{ pt: 3 }}>
 							<CustomerListResults
-								componentname={'customers'}
+								routename={'customers'}
 								tableinfo={tableInfo}
 								data={customers} />
 						</Box>

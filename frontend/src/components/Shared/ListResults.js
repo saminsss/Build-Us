@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => {
 	}
 });
 
-const ListResults = ({ componentname = 'component', tableinfo, data, ...rest }) => {
+const ListResults = ({ routename = 'route', tableinfo, data, ...rest }) => {
 	const styles = useStyles();
 	const [rowData, setRowData] = useState([]);
 	const [selectedRows, setSelectedRows] = useState([]);
@@ -88,6 +88,13 @@ const ListResults = ({ componentname = 'component', tableinfo, data, ...rest }) 
 		setPage(newPage);
 	};
 
+	/**
+	 * Build a string for the table cell based on the data passed in along with how each data field is to be seperated
+	 * @param {*} rowData the data set object
+	 * @param {*} datakeys the keys which are to be searched for in the object
+	 * @param {*} separator the seperator used to seperated the data fields in cell
+	 * @returns constructed string
+	 */
 	const buildTableRowCells = (rowData, datakeys, separator) => {
 		if (!separator) separator = '';
 
@@ -102,10 +109,10 @@ const ListResults = ({ componentname = 'component', tableinfo, data, ...rest }) 
 		return completecell.substring(0, completecell.length - separator.length)
 	};
 
-	/**Sorts the rowData according to the sort order
+	/**Sorts the row data according to the sort order
 	 * @param rowdatakeys the keys that make up each table cell for each row
 	 * @param sortOrder the order in which the rows are sorted, true - descending, false - ascending
-	**/
+	 */
 	const sort = (rowdatakeys, sortOrder = false) => {
 		const sortedList = rowData.sort((a, b) => {
 			let sortByValueA = '';
@@ -135,10 +142,9 @@ const ListResults = ({ componentname = 'component', tableinfo, data, ...rest }) 
 			<ListToolbar
 				searchData={data}
 				searchFilters={tableinfo}
-				setList={setRowData}
+				setFilteredData={setRowData}
 				setPage={setPage}
-				addButtonText={'Add ' + componentname}
-				searchBarPlaceholder={'Search ' + componentname}
+				routename={routename}
 			/>
 
 			<Card>

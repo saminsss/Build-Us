@@ -5,7 +5,10 @@ import Dashboard from "./screens/Dashboard";
 import SignIn from "./screens/SignIn";
 import SignUp from "./screens/SignUp";
 import EmployeeList from "./screens/Employee"
+
 import CustomerList from "./screens/Customer";
+import Add from "./components/Shared/Add";
+
 import InvoiceList from "./screens/Invoice";
 import Unauthorized from "./screens/Unauthorized";
 import NotFound from "./screens/NotFound"
@@ -43,12 +46,21 @@ const App = () => {
 			<Router>
 				<Switch>
 
-					<Route exact path={["/dashboard", "/customers", "/employees", "/invoices"]}>
+					<Route exact path={["/dashboard", "/customers", "/add", "/employees", "/invoices"]}>
 						<DrawerLayout>
+							{/* Dashboard */}
 							<AdminRoute exact path="/dashboard" component={Dashboard} />
+
+							{/* Employeed */}
 							<AdminRoute exact path="/employees" component={EmployeeList} />
+
+							{/* Customers */}
 							<EmployeeRoute exact path="/customers" component={CustomerList} />
+
+							{/* Invoices */}
 							<AdminRoute exact path="/invoices" component={InvoiceList} />
+
+							<AdminRoute exact path="/add" component={Add}></AdminRoute>
 						</DrawerLayout>
 					</Route>
 

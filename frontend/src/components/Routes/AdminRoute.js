@@ -37,7 +37,7 @@ const AdminRoute = ({ component: Component, ...rest }) => {
 					if (role === 'A') {
 						const Axios = axios.create();
 						Authentication.setAuthentication(Axios);
-						return <Component {...props} id={id} role={role} axios={Axios} />
+						return <Component {...rest} id={id} role={role} axios={Axios} />
 					} else {
 						return role && <Redirect
 							to={{

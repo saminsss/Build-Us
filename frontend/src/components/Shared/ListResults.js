@@ -12,10 +12,20 @@ import {
 	TableHead,
 	TablePagination,
 	TableRow,
-	makeStyles
+	Tab,
+	Tabs,
+	Tooltip,
+	makeStyles,
 } from '@material-ui/core';
+
+import {
+	Sort,
+} from '@material-ui/icons';
+
+import { useHistory } from 'react-router';
+
 import ListToolbar from '../Shared/ListToolbar';
-import SortIcon from '@mui/icons-material/Sort';
+
 import moment from 'moment';
 
 const useStyles = makeStyles((theme) => {
@@ -33,16 +43,28 @@ const useStyles = makeStyles((theme) => {
 			minWidth: theme.spacing(1),
 			marginLeft: theme.spacing(1.25)
 		},
+		actionCell: {
+			display: 'flex',
+			flexWrap: 'nowrap'
+		},
+		actionButton: {
+			maxWidth: theme.spacing(1),
+			minWidth: theme.spacing(1),
+			marginRight: theme.spacing(0.25)
+		}
 	}
 });
 
-const ListResults = ({ routename = 'route', tableinfo, data, ...rest }) => {
+const ListResults = ({ routename = 'route', tabinfo, actions, data, ...rest }) => {
 	const styles = useStyles();
 	const [rowData, setRowData] = useState([]);
 	const [selectedRows, setSelectedRows] = useState([]);
-	const [limit, setLimit] = useState(10);
+	const [sortKey, setSortKey] = useState({});
 	const [page, setPage] = useState(0);
-	const [sortOrder, setSortOrder] = useState({});
+	const [limit, setLimit] = useState(10);
+	const [tabNo, setTabNo] = useState(0);
+
+	const history = useHistory();
 
 	useEffect(() => {
 		setRowData(data);
@@ -88,32 +110,39 @@ const ListResults = ({ routename = 'route', tableinfo, data, ...rest }) => {
 		setPage(newPage);
 	};
 
+	const handleTabChange = (event, value) => {
+		setTabNo(value);
+	}
+
 	/**
 	 * Build a string for the table cell based on the data passed in along with how each data field is to be seperated
 	 * @param {*} rowData the data set object
 	 * @param {*} datakeys the keys which are to be searched for in the object
-	 * @param {*} separator the seperator used to seperated the data fields in cell
+	 * @param {*} rowdataseparator the seperator used to seperated the data fields in cell
 	 * @returns constructed string
 	 */
-	const buildTableRowCells = (rowData, datakeys, separator) => {
-		if (!separator) separator = '';
+	const buildTableRowCells = (rowdata, rowdatakeys, rowdataseparator) => {
+		if (!rowdataseparator) rowdataseparator = '';
 
 		let completecell = '';
-		for (let key of datakeys) {
-			if (!rowData[key]) continue;
+		for (let key of rowdatakeys) {
+			if (!rowdata[key]) continue;
 			if (key.includes('date'))
-				completecell += moment(rowData[key]).format('MMMM Do, YYYY') + separator
+				completecell += moment(rowdata[key]).format('MMMM Do, YYYY') + rowdataseparator
 			else
-				completecell += rowData[key] + separator
+				completecell += rowdata[key] + rowdataseparator
 		}
-		return completecell.substring(0, completecell.length - separator.length)
+		if (completecell.length === 0) return completecell;
+		else return completecell.substring(0, completecell.length - rowdataseparator.length)
 	};
 
 	/**Sorts the row data according to the sort order
+	 * @param columntitle the column to sort by
 	 * @param rowdatakeys the keys that make up each table cell for each row
-	 * @param sortOrder the order in which the rows are sorted, true - descending, false - ascending
+	 * @param sortorder the order in which the rows are sorted, true - descending, false - ascending
 	 */
-	const sort = (rowdatakeys, sortOrder = false) => {
+	const sort = (columntitle, rowdatakeys, sortorder = false) => {
+		setSortKey({ [columntitle]: !sortKey[columntitle] })
 		const sortedList = rowData.sort((a, b) => {
 			let sortByValueA = '';
 			let sortByValueB = '';
@@ -128,7 +157,7 @@ const ListResults = ({ routename = 'route', tableinfo, data, ...rest }) => {
 					sortByValueB += b[rowdatakey]
 				}
 			}
-			if (sortOrder === false)
+			if (sortorder === false)
 				return sortByValueA.localeCompare(sortByValueB);
 			else
 				return sortByValueB.localeCompare(sortByValueA);
@@ -137,91 +166,125 @@ const ListResults = ({ routename = 'route', tableinfo, data, ...rest }) => {
 		setRowData([...sortedList]);
 	};
 
+	let searchFilters = [];
+	for (let tab of tabinfo) {
+		searchFilters.push(...(tab.tabtableinfo))
+	};
+
 	return (
 		<Box {...rest}>
 			<ListToolbar
-				searchData={data}
-				searchFilters={tableinfo}
-				setFilteredData={setRowData}
-				setPage={setPage}
+				searchdata={data}
+				searchfilters={searchFilters}
+				setfiltereddata={setRowData}
+				setpage={setPage}
 				routename={routename}
 			/>
 
 			<Card>
-				<TableContainer>
-					<Table>
-						<TableHead className={styles.table} stickyHeader>
-							<TableRow>
-								<TableCell padding="checkbox">
-									<Checkbox
-										checked={selectedRows.length === rowData.length}
-										color="secondary"
-										indeterminate={
-											selectedRows.length > 0
-											&& selectedRows.length < rowData.length
-										}
-										onChange={handleSelectAll}
-									/>
-								</TableCell>
-								{tableinfo?.map((table, index) => (
-									<TableCell key={index}>
-										<Box className={styles.tableHeader}>
-											{table.headertitle}
-											<Button
-												className={styles.sortButton}
-												variant='outlined'
-												onClick={() => {
-													setSortOrder({ [table.headertitle]: !sortOrder[table.headertitle] })
-													return sort(table.rowdatakeys, sortOrder[table.headertitle])
-												}}
-											>
-												<SortIcon />
-											</Button>
-										</Box>
-									</TableCell>
-								))}
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{rowData?.slice((page * limit), (page + 1) * limit).map((rowitem, rowindex) => (
-								<TableRow
-									hover
-									key={rowindex}
-									selected={selectedRows.indexOf(rowitem.id) !== -1}
-								>
-									<TableCell padding="checkbox">
-										<Checkbox
-											checked={selectedRows.indexOf(rowitem.id) !== -1}
-											onChange={(event) => handleSelectOne(event, rowitem.id)}
-											value="true"
-										/>
-									</TableCell>
-									{tableinfo?.map((table, index) => (
-										<TableCell key={index}>
-											{buildTableRowCells(rowitem, table.rowdatakeys, table.separator)}
+				<Tabs value={tabNo} onChange={handleTabChange}>
+					{tabinfo.map((tab, tabindex) => (
+						<Tab key={tabindex} label={tab.tabtitle} />
+					))}
+				</Tabs>
+				{tabinfo.map((tab, tabindex) => (
+					<TabPanel key={tabindex} value={tabNo} index={tabindex}>
+						<TableContainer>
+							<Table>
+								<TableHead className={styles.table} stickyHeader>
+									<TableRow>
+										<TableCell padding="checkbox">
+											<Checkbox
+												checked={selectedRows.length === rowData.length}
+												color="secondary"
+												indeterminate={
+													selectedRows.length > 0
+													&& selectedRows.length < rowData.length
+												}
+												onChange={handleSelectAll}
+											/>
 										</TableCell>
+										{tab.tabtableinfo?.map((table, tabtableindex) => (
+											<TableCell key={tabtableindex}>
+												<Box className={styles.tableHeader}>
+													{table.columntitle}
+													<Button
+														className={styles.sortButton}
+														variant='outlined'
+														onClick={() => sort(table.columntitle, table.rowdatakeys, sortKey[table.columntitle])}
+													>
+														<Sort />
+													</Button>
+												</Box>
+											</TableCell>
+										))}
+										<TableCell>
+											<Box>
+												Actions
+											</Box>
+										</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{rowData?.slice((page * limit), (page + 1) * limit).map((rowitem, rowindex) => (
+										<TableRow
+											hover
+											key={rowindex}
+											selected={selectedRows.indexOf(rowitem.id) !== -1}
+										>
+											<TableCell padding="checkbox">
+												<Checkbox
+													checked={selectedRows.indexOf(rowitem.id) !== -1}
+													onChange={(event) => handleSelectOne(event, rowitem.id)}
+													value="true"
+												/>
+											</TableCell>
+											{tab.tabtableinfo?.map((table, index) => (
+												<TableCell key={index}>
+													{buildTableRowCells(rowitem, table.rowdatakeys, table.rowdataseparator)}
+												</TableCell>
+											))}
+											<TableCell className={styles.actionCell}>
+												{actions.map((action, index) => (
+													<Tooltip key={index} title={action.title}>
+														<Button
+															className={styles.actionButton}
+															variant='outlined'
+															onClick={() => history.push(`/${routename}/${action.path}`)}
+														>
+															{action.icon}
+														</Button>
+													</Tooltip>
+												))}
+											</TableCell>
+
+										</TableRow>
 									))}
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<TablePagination
-					component='div'
-					count={rowData.length}
-					onPageChange={handlePageChange}
-					onRowsPerPageChange={handleLimitChange}
-					page={page}
-					rowsPerPage={limit}
-					rowsPerPageOptions={[5, 10, 25]}
-				/>
+								</TableBody>
+							</Table>
+						</TableContainer>
+						<TablePagination
+							component='div'
+							count={rowData.length}
+							onPageChange={handlePageChange}
+							onRowsPerPageChange={handleLimitChange}
+							page={page}
+							rowsPerPage={limit}
+							rowsPerPageOptions={[5, 10, 25]}
+						/>
+					</TabPanel>
+				))}
 			</Card>
-		</Box>
+		</Box >
 	);
 };
 
 ListResults.propTypes = {
 	data: PropTypes.array.isRequired
 };
+
+const TabPanel = ({ children, value, index }) => (
+	value === index && <Box>{children}</Box>
+);
 
 export default ListResults;

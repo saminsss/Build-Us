@@ -1,34 +1,67 @@
+import {
+	Book,
+	Edit
+} from '@material-ui/icons';
+
 const getTableInfo = () => {
-	const list = [
+	const tabList = [
 		{
-			headertitle: 'Name',
-			rowdatakeys: ['firstname', 'lastname'],
-			separator: ' '
+			tabtitle: 'General Info',
+			tabtableinfo: [
+				{
+					columntitle: 'Name',
+					rowdatakeys: ['firstname', 'lastname'],
+					rowdataseparator: ' '
+				},
+				{
+					columntitle: 'Email',
+					rowdatakeys: ['email'],
+				},
+				{
+					columntitle: 'Address',
+					rowdatakeys: ['city', 'province', 'country'],
+					rowdataseparator: ', '
+				},
+				{
+					columntitle: 'Title',
+					rowdatakeys: ['title'],
+				},
+				{
+					columntitle: 'Join Date',
+					rowdatakeys: ['joindate'],
+				}
+			]
 		},
 		{
-			headertitle: 'Email',
-			rowdatakeys: ['email'],
-		},
-		{
-			headertitle: 'Address',
-			rowdatakeys: ['city', 'province', 'country'],
-			separator: ', '
-		},
-		{
-			headertitle: 'Title',
-			rowdatakeys: ['title'],
-		},
-		{
-			headertitle: 'Phone',
-			rowdatakeys: ['phone'],
-		},
-		{
-			headertitle: 'Join Date',
-			rowdatakeys: ['joindate'],
+			tabtitle: 'Contact Info',
+			tabtableinfo: [
+				{
+					columntitle: 'Name',
+					rowdatakeys: ['firstname', 'lastname'],
+					rowdataseparator: ' '
+				},
+				{
+					columntitle: 'Phone',
+					rowdatakeys: ['phone'],
+				},
+			]
 		},
 	];
 
-	return list;
+	const actionList = [
+		{
+			title: 'Edit',
+			icon: <Edit />,
+			path: 'edit'
+		},
+		{
+			title: 'Hours',
+			icon: <Book />,
+			path: 'hours'
+		},
+	]
+
+	return { tabList, actionList };
 }
 
 export default getTableInfo;

@@ -1,30 +1,59 @@
+import {
+	Book,
+	Edit
+} from '@material-ui/icons';
+
 const getTableInfo = () => {
-	const list = [
+	const tabList = [
 		{
-			headertitle: 'Name',
-			rowdatakeys: ['firstname', 'lastname'],
-			separator: ' '
+			tabtitle: 'General Info',
+			tabtableinfo: [
+				{
+					columntitle: 'Name',
+					rowdatakeys: ['firstname', 'lastname'],
+					rowdataseparator: ' ',
+				},
+				{
+					columntitle: 'Email',
+					rowdatakeys: ['email'],
+				},
+				{
+					columntitle: 'Address',
+					rowdatakeys: ['city', 'province', 'country'],
+					rowdataseparator: ', '
+				},
+				{
+					columntitle: 'Registration Date',
+					rowdatakeys: ['registrationdate'],
+				},
+			]
 		},
 		{
-			headertitle: 'Email',
-			rowdatakeys: ['email'],
-		},
-		{
-			headertitle: 'Address',
-			rowdatakeys: ['city', 'province', 'country'],
-			separator: ', '
-		},
-		{
-			headertitle: 'Phone',
-			rowdatakeys: ['phone'],
-		},
-		{
-			headertitle: 'Registration Date',
-			rowdatakeys: ['registrationdate'],
+			tabtitle: 'Contact Info',
+			tabtableinfo: [
+				{
+					columntitle: 'Phone',
+					rowdatakeys: ['phone'],
+				},
+
+			]
 		},
 	];
 
-	return list;
+	const actionList = [
+		{
+			title: 'Edit',
+			icon: <Edit />,
+			path: 'edit'
+		},
+		{
+			title: 'Lessons/Hours',
+			icon: <Book />,
+			path: 'hours'
+		},
+	];
+
+	return { tabList, actionList };
 }
 
 export default getTableInfo;

@@ -1,4 +1,5 @@
 import {
+	Assessment,
 	Dashboard,
 	Person,
 	LocalMall,
@@ -46,10 +47,19 @@ const getDrawerContents = (user) => {
 							}
 						]
 					},
+				]
+			},
+			{
+				title: 'Billing',
+				items: [
 					{
 						name: 'Invoices',
 						icon: <Receipt color='primary' />,
 						path: '/invoices'
+					},
+					{
+						name: 'Reports',
+						icon: <Assessment color='primary' />,
 					},
 				]
 			}

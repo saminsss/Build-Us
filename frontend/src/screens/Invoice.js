@@ -8,7 +8,7 @@ import InvoiceListResults from '../components/Shared/ListResults';
 
 const InvoiceList = ({ id, axios }) => {
 	const [invoices, setInvoices] = useState([]);
-	const [tableInfo, setTableInfo] = useState([]);
+	const [tabInfo, setTabInfo] = useState([]);
 
 	useEffect(() => {
 		const fetchInvoices = async () => {
@@ -17,8 +17,10 @@ const InvoiceList = ({ id, axios }) => {
 		};
 
 		fetchInvoices();
-		setTableInfo(getTableInfo());
+		setTabInfo(getTableInfo());
 	}, [id, axios]);
+
+	const { tabList, actionList } = tabInfo;
 
 	return (
 		<Box sx={{
@@ -28,12 +30,13 @@ const InvoiceList = ({ id, axios }) => {
 				sx={{
 					py: 3
 				}}>
-				{invoices &&
+				{invoices && tabList && actionList &&
 					<Container maxWidth={false}>
 						<Box sx={{ pt: 3 }}>
 							<InvoiceListResults
 								routename={'invoices'}
-								tableinfo={tableInfo}
+								tabinfo={tabList}
+								actions={actionList}
 								data={invoices} />
 						</Box>
 					</Container>

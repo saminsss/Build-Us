@@ -8,7 +8,7 @@ import EmployeeListResults from '../components/Shared/ListResults';
 
 const EmployeeList = ({ id, axios }) => {
 	const [employees, setEmployees] = useState([]);
-	const [tableInfo, setTableInfo] = useState([]);
+	const [tabInfo, setTabInfo] = useState([]);
 
 	useEffect(() => {
 		const fetchEmployees = async () => {
@@ -16,8 +16,10 @@ const EmployeeList = ({ id, axios }) => {
 			setEmployees(res.data);
 		};
 		fetchEmployees();
-		setTableInfo(getTableInfo());
+		setTabInfo(getTableInfo());
 	}, [id, axios]);
+
+	const { tabList, actionList } = tabInfo;
 
 	return (
 		<Box sx={{
@@ -27,12 +29,13 @@ const EmployeeList = ({ id, axios }) => {
 				sx={{
 					py: 3
 				}}>
-				{employees &&
+				{employees && tabList && actionList &&
 					<Container maxWidth={false}>
 						<Box sx={{ pt: 3 }}>
 							<EmployeeListResults
 								routename={'employees'}
-								tableinfo={tableInfo}
+								tabinfo={tabList}
+								actions={actionList}
 								data={employees} />
 						</Box>
 					</Container>

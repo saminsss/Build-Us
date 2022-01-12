@@ -41,28 +41,32 @@ const useStyles = makeStyles((theme) => {
     }
 });
 
-const ListToolbar = ({ searchData, searchFilters, setFilteredData, setPage, routename = 'route', ...rest }) => {
+const ListToolbar = ({ searchdata, searchfilters, setfiltereddata, setpage, routename = 'route', ...rest }) => {
     const styles = useStyles();
     const [searchValue, setSearchValue] = useState();
 
     const history = useHistory();
 
     useEffect(() => {
-        setFilteredData(searchData)
-    }, [searchData, setFilteredData]);
+        setfiltereddata(searchdata)
+    }, [searchdata, setfiltereddata]);
 
     useEffect(() => {
-
         /**
-         * Filters the data and sets the filtered data using the callback function setFilteredData
+         * Filters the data and sets the filtered data using the callback function setfiltereddata
          */
         const filter = () => {
-            const filteredList = searchData.filter((item) => {
+            const filteredList = searchdata.filter((item) => {
+                let alreadySearchedKeys = [];
                 let filtered = false;
-                for (let field of searchFilters) {
+                for (let field of searchfilters) {
+                    if (alreadySearchedKeys.includes(...(field.rowdatakeys))) continue;
+
+                    alreadySearchedKeys.push(...(field.rowdatakeys))
                     let searchInValue = '';
-                    for (let rowdatakey of field['rowdatakeys']) {
-                        const separator = field['separator'] ? field['separator'] : '';
+
+                    for (let rowdatakey of field.rowdatakeys) {
+                        const separator = field.rowdataseparator ? field.rowdataseparator : '';
                         if (rowdatakey.includes('date'))
                             searchInValue += moment(item[rowdatakey])?.format('MMMM Do, YYYY') + separator;
                         else
@@ -73,15 +77,15 @@ const ListToolbar = ({ searchData, searchFilters, setFilteredData, setPage, rout
                 return filtered;
             });
 
-            setFilteredData(filteredList);
+            setfiltereddata(filteredList);
         }
 
         filter();
-    }, [searchValue, searchData, searchFilters, setFilteredData]);
+    }, [searchValue, searchdata, setfiltereddata]);
 
     const handleOnChange = (e) => {
         setSearchValue(e.target.value);
-        setPage(0);
+        setpage(0);
     };
 
     return (

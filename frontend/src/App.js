@@ -46,13 +46,14 @@ const App = () => {
 			<Router>
 				<Switch>
 
-					<Route exact path={["/dashboard", "/customers", "/add", "/employees", "/invoices"]}>
+					<Route exact path={["/dashboard", "/customers", "/add", "/employees", "/employees/edit", "/invoices"]}>
 						<DrawerLayout>
 							{/* Dashboard */}
 							<AdminRoute exact path="/dashboard" component={Dashboard} />
 
 							{/* Employeed */}
 							<AdminRoute exact path="/employees" component={EmployeeList} />
+							<AdminRoute exact path="/employees/edit" component={EmployeeList} />
 
 							{/* Customers */}
 							<EmployeeRoute exact path="/customers" component={CustomerList} />

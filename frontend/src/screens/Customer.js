@@ -8,7 +8,7 @@ import CustomerListResults from '../components/Shared/ListResults';
 
 const CustomerList = ({ id, axios }) => {
 	const [customers, setCustomers] = useState([]);
-	const [tableInfo, setTableInfo] = useState([]);
+	const [tabInfo, setTabInfo] = useState([]);
 
 	useEffect(() => {
 		const fetchCustomers = async () => {
@@ -16,8 +16,10 @@ const CustomerList = ({ id, axios }) => {
 			setCustomers(res.data);
 		};
 		fetchCustomers();
-		setTableInfo(getTableInfo());
+		setTabInfo(getTableInfo());
 	}, [id, axios]);
+
+	const { tabList, actionList } = tabInfo;
 
 	return (
 		<Box sx={{
@@ -27,12 +29,13 @@ const CustomerList = ({ id, axios }) => {
 				sx={{
 					py: 3
 				}}>
-				{customers &&
+				{customers && tabList && actionList &&
 					<Container maxWidth={false}>
 						<Box sx={{ pt: 3 }}>
 							<CustomerListResults
 								routename={'customers'}
-								tableinfo={tableInfo}
+								tabinfo={tabList}
+								actions={actionList}
 								data={customers} />
 						</Box>
 					</Container>

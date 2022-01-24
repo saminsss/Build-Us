@@ -1,17 +1,18 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Home from "./screens/Home";
-import Dashboard from "./screens/Dashboard";
-import SignIn from "./screens/SignIn";
-import SignUp from "./screens/SignUp";
-import EmployeeList from "./screens/Employee"
+import Home from "./Screens/Home";
+import Dashboard from "./Screens/Dashboard";
+import SignIn from "./Screens/SignIn";
+import SignUp from "./Screens/SignUp";
 
-import CustomerList from "./screens/Customer";
+import EmployeeList from "./Screens/Employee"
+import CustomerList from "./Screens/Customer";
+
 import Add from "./components/Shared/Add";
 
-import InvoiceList from "./screens/Invoice";
-import Unauthorized from "./screens/Unauthorized";
-import NotFound from "./screens/NotFound"
+import InvoiceList from "./Screens/Invoice";
+import Unauthorized from "./Screens/Unauthorized";
+import NotFound from "./Screens/NotFound"
 
 
 import AdminRoute from "./components/Routes/AdminRoute";
@@ -40,32 +41,47 @@ const theme = createTheme({
 	},
 });
 
+const customerRouteName = 'customers';
+const employeeRouteName = 'employees';
+const invoiceRouteName = 'invoices';
+
 const App = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<Router>
 				<Switch>
 
-					<Route exact path={["/dashboard", "/customers", "/add", "/employees", "/employees/edit", "/invoices"]}>
+					<Route exact path={
+						[
+							`/dashboard`,
+							`/${customerRouteName}`, `/${customerRouteName}/add`,
+							`/${employeeRouteName}`, `/${employeeRouteName}/add`,
+							`/${invoiceRouteName}`
+						]}>
 						<DrawerLayout>
 							{/* Dashboard */}
 							<AdminRoute exact path="/dashboard" component={Dashboard} />
 
 							{/* Employeed */}
-							<AdminRoute exact path="/employees" component={EmployeeList} />
-							<AdminRoute exact path="/employees/edit" component={EmployeeList} />
+							<AdminRoute exact path={`/${employeeRouteName}`} routename={employeeRouteName} component={EmployeeList} />
+							<AdminRoute exact path={`/${employeeRouteName}/add`} routename={employeeRouteName} component={Add} />
 
 							{/* Customers */}
-							<EmployeeRoute exact path="/customers" component={CustomerList} />
+							<EmployeeRoute exact path={`/${customerRouteName}`} routename={customerRouteName} component={CustomerList} />
+							<EmployeeRoute exact path={`/${customerRouteName}/add`} routename={customerRouteName} component={Add} />
 
 							{/* Invoices */}
-							<AdminRoute exact path="/invoices" component={InvoiceList} />
-
-							<AdminRoute exact path="/add" component={Add}></AdminRoute>
+							<AdminRoute exact path={`/${invoiceRouteName}`} routename={invoiceRouteName} component={InvoiceList} />
 						</DrawerLayout>
 					</Route>
 
-					<Route exact path={["/", "/signin", "/signup", "/unauthorized"]}>
+					<Route exact path={
+						[
+							"/",
+							"/signin",
+							"/signup",
+							"/unauthorized"
+						]}>
 						<SimpleLayout>
 							<Route exact path="/" component={Home} />
 							<Route exact path="/signin" component={SignIn} />

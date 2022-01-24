@@ -6,7 +6,7 @@ import {
 import getTableInfo from '../components/Customer/getTableInfo';
 import CustomerListResults from '../components/Shared/ListResults';
 
-const CustomerList = ({ id, axios }) => {
+const CustomerList = ({ id, axios, ...rest }) => {
 	const [customers, setCustomers] = useState([]);
 	const [tabInfo, setTabInfo] = useState([]);
 
@@ -33,10 +33,11 @@ const CustomerList = ({ id, axios }) => {
 					<Container maxWidth={false}>
 						<Box sx={{ pt: 3 }}>
 							<CustomerListResults
-								routename={'customers'}
 								tabinfo={tabList}
 								actions={actionList}
-								data={customers} />
+								data={customers}
+								{...rest} //contains routename
+							/>
 						</Box>
 					</Container>
 				}

@@ -6,7 +6,7 @@ import {
 import getTableInfo from '../components/Employee/getTableInfo';
 import EmployeeListResults from '../components/Shared/ListResults';
 
-const EmployeeList = ({ id, axios }) => {
+const EmployeeList = ({ id, axios, ...rest }) => {
 	const [employees, setEmployees] = useState([]);
 	const [tabInfo, setTabInfo] = useState([]);
 
@@ -33,10 +33,11 @@ const EmployeeList = ({ id, axios }) => {
 					<Container maxWidth={false}>
 						<Box sx={{ pt: 3 }}>
 							<EmployeeListResults
-								routename={'employees'}
 								tabinfo={tabList}
 								actions={actionList}
-								data={employees} />
+								data={employees}
+								{...rest} //contains routename
+							/>
 						</Box>
 					</Container>
 				}

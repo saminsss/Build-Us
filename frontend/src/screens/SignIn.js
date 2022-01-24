@@ -40,8 +40,9 @@ const Copyright = (props) => {
 	return (
 		<Typography variant="body2" color="text.secondary" align="center" {...props}>
 			{'Copyright © '}
-			<Link color="inherit" href="https://material-ui.com/">
-				Your Website
+
+			<Link color="inherit" href="http://buildus.herokuapp.com/">
+				BuildUs
 			</Link>{' '}
 			{new Date().getFullYear()}
 			{'.'}
@@ -195,6 +196,12 @@ const SignIn = (props) => {
 					</Box>
 				</Box>
 				<Copyright sx={{ mt: 8, mb: 4 }} />
+				<Typography variant="body2" color="text.secondary" align="center" {...props}>
+					Sign up and Sign in to view Demo Application in Admin mode
+				</Typography>
+				<Typography variant="body2" color="text.secondary" align="center" {...props}>
+					Click on "Don't have an account? Sign Up" to Sign Up
+				</Typography>
 			</Container>
 		</Box >
 	);

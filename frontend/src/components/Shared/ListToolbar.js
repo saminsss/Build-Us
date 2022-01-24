@@ -104,7 +104,7 @@ const ListToolbar = ({ searchdata, searchfilters, setfiltereddata, setpage, rout
                     color="secondary"
                     variant="contained"
                     onClick={() => history.push({
-                        pathname: '/add',
+                        pathname: `/${routename}/add`,
                         state: { routename: routename }
                     })}
                 >

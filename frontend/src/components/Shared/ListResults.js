@@ -218,11 +218,11 @@ const ListResults = ({ routename = 'route', tabinfo, actions, data, ...rest }) =
 												</Box>
 											</TableCell>
 										))}
-										<TableCell>
+										{actions && <TableCell>
 											<Box>
 												Actions
 											</Box>
-										</TableCell>
+										</TableCell>}
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -244,7 +244,7 @@ const ListResults = ({ routename = 'route', tabinfo, actions, data, ...rest }) =
 													{buildTableRowCells(rowitem, table.rowdatakeys, table.rowdataseparator)}
 												</TableCell>
 											))}
-											<TableCell className={styles.actionCell}>
+											{actions && <TableCell className={styles.actionCell}>
 												{actions.map((action, index) => (
 													<Tooltip key={index} title={action.title}>
 														<Button
@@ -256,7 +256,7 @@ const ListResults = ({ routename = 'route', tabinfo, actions, data, ...rest }) =
 														</Button>
 													</Tooltip>
 												))}
-											</TableCell>
+											</TableCell>}
 
 										</TableRow>
 									))}

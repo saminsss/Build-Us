@@ -6,7 +6,7 @@ import {
 import getTableInfo from '../components/Invoice/getTableInfo';
 import InvoiceListResults from '../components/Shared/ListResults';
 
-const InvoiceList = ({ id, axios }) => {
+const InvoiceList = ({ id, axios, ...rest }) => {
 	const [invoices, setInvoices] = useState([]);
 	const [tabInfo, setTabInfo] = useState([]);
 
@@ -34,10 +34,11 @@ const InvoiceList = ({ id, axios }) => {
 					<Container maxWidth={false}>
 						<Box sx={{ pt: 3 }}>
 							<InvoiceListResults
-								routename={'invoices'}
 								tabinfo={tabList}
 								actions={actionList}
-								data={invoices} />
+								data={invoices}
+								{...rest} //contains routename
+							/>
 						</Box>
 					</Container>
 				}

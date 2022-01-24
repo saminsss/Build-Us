@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import {
 	Box,
 	makeStyles,
+	useTheme,
+	useMediaQuery,
 	Typography,
 } from '@material-ui/core';
 
@@ -22,13 +24,22 @@ const useStyles = makeStyles((theme) => {
 			borderRadius: '0px 0px 250% 0px',
 			zIndex: -10
 		},
-		intro: {
+		introAbsolute: {
 			paddingTop: theme.spacing(18),
 			paddingLeft: theme.spacing(18),
+			paddingRight: theme.spacing(18),
+		},
+		introCenter: {
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+			justifyContent: 'center',
+			paddingTop: theme.spacing(5),
+			paddingLeft: theme.spacing(10),
+			paddingRight: theme.spacing(10)
 		},
 		introText: {
-
-			fontSize: '52px',
+			fontSize: '30px',
 			fontWeight: 'bold',
 			fontFamily: 'Quicksand, cursive',
 			color: theme.palette.primary.main
@@ -43,6 +54,8 @@ const useStyles = makeStyles((theme) => {
 
 const Home = () => {
 	const styles = useStyles();
+	const theme = useTheme();
+	const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
 
 	const [animation, setAnimation] = useState(true);
 	const [serviceTextIndex, setServiceTextIndex] = useState(0);
@@ -64,12 +77,12 @@ const Home = () => {
 	return (
 		<Box className={styles.page}>
 			<Box className={styles.introBackground}>
-				<Box className={styles.intro}>
+				<Box className={isMdUp ? styles.introAbsolute : styles.introCenter}>
 					<Typography className={styles.introText}>Organize And Automate Your</Typography>
 					<Grow in={animation} timeout={{ enter: 1000, exit: 800 }} mountOnEnter unmountOnExit onExited={() => changeServiceText()}>
 						<Typography className={styles.serviceText}>{services[serviceTextIndex]}</Typography>
 					</Grow>
-				</Box >
+				</Box>
 
 			</Box>
 		</Box>

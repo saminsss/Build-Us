@@ -7,7 +7,6 @@ import {
 } from '@material-ui/core'
 import getNavBarContents from '../SimpleLayout/getNavBarContents';
 import AppNavBar from '../SimpleLayout/AppNavBar';
-import AppDrawerBar from '../SimpleLayout/AppDrawerBar';
 
 const useStyles = makeStyles((theme) => {
 	return {

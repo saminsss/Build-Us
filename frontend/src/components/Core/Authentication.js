@@ -5,7 +5,7 @@ import Axios from "axios";
 
 const Authentication = () => {
 
-	const isAuthenticated = () => {
+	const isAuthenticated = async () => {
 		let isAuthenticated = false;
 
 		const id = Cookies.get('id');
@@ -13,7 +13,11 @@ const Authentication = () => {
 		const refreshToken = Cookies.get('refreshToken');
 		const remember = Cookies.get('remember');
 		if (id && accessToken && refreshToken && remember) {
-			isAuthenticated = true;
+			const authReq = Axios.create();
+			setAuthentication(authReq);
+
+			const res = await authReq.post(`/auth/verify/${id}`);
+			if (res.data.msg === 'success') isAuthenticated = true;
 		}
 
 		return isAuthenticated;

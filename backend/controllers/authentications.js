@@ -1,6 +1,7 @@
 const pool = require("../components/db");
 
 const authTableName = "AUTHENTICATION"
+const usersTable = "USERS"
 
 const authController = () => {
 	const insertToken = async (token) => {
@@ -68,7 +69,29 @@ const authController = () => {
 		}
 	}
 
-	return { insertToken, getToken, updateToken, deleteToken };
+	const getRole = async (id) => {
+		let res = {};
+		try {
+			let sql = "SELECT ROLE FROM " + usersTable + " WHERE ID = $1";
+			let sqlData = [id];
+
+			const data = await pool.query(sql, sqlData);
+			if (data.rows.length == 0) {
+				res.msg = 'not found';
+				return res;
+			}
+
+			res.role = data.rows[0].role;
+			res.msg = 'success';
+		} catch (error) {
+			console.log("JSON Data not correctly formatted");
+			res.msg = "error";
+		}
+
+		return res;
+	}
+
+	return { insertToken, getToken, updateToken, deleteToken, getRole };
 }
 
 module.exports = authController();

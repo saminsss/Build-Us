@@ -4,11 +4,11 @@ import CustomerDashboard from '../components/Dashboard/CustomerDashboard';
 
 const Dashboard = ({ role }) => {
 	let dashboard = 'Loading';
-	if (role === 'A')
+	if (role === 'ADMIN')
 		dashboard = <AdminDashboard />
-	else if (role === 'E')
+	else if (role === 'EMPLOYEE')
 		dashboard = <EmployeeDashboard />
-	else if (role === 'C')
+	else if (role === 'CUSTOMER')
 		dashboard = <CustomerDashboard />
 	else
 		dashboard = 'Something went wrong'

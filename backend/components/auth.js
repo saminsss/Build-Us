@@ -10,6 +10,7 @@ const userTableName = "USERS";
 const signInRoutes = ["/auth/signin"];
 const signOutRoutes = ["/auth/signout"];
 const signUpRoutes = ["/auth/signup"];
+const verifyRoutes = ["/auth/verify/:id"]
 const refreshRoutes = ["/auth/refresh"];
 
 function generateAccessToken(id) {
@@ -30,6 +31,23 @@ function authenticateToken(req, res, next) {
 		req.id = user.id;
 		next();
 	});
+}
+
+function authorizeRole(roles) {
+	return async (req, res, next) => {
+		let roleVerified = false;
+		for (let role of roles) {
+			const data = await authController.getRole(req.id);
+			if (data.role === role) {
+				roleVerified = true;
+				break;
+			}
+		}
+
+		if (!roleVerified) return res.status(403).json({ msg: "error" });
+
+		next();
+	}
 }
 
 const authenticate = (app) => {
@@ -158,6 +176,12 @@ const authenticate = (app) => {
 			res.status(401).json({ error: error, msg: "error" });
 		}
 	});
+
+	//verify
+	app.post(verifyRoutes, authenticateToken, (req, res) => {
+		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
+		else return res.status(200).json({ msg: "success" });
+	});
 }
 
-module.exports = { authenticate, authenticateToken };
+module.exports = { authenticate, authenticateToken, authorizeRole };

@@ -35,7 +35,7 @@ const AdminRoute = ({ component: Component, ...rest }) => {
 		{...rest}
 		render={props => {
 			if (authenticated === true) {
-				if (role === 'ADMIN') {
+				if (role === 'ADMIN' || role === 'EMPLOYEE' || role === 'CUSTOMER') {
 					const Axios = axios.create();
 					Authentication.setAuthentication(Axios);
 					return <Component {...rest} id={id} role={role} axios={Axios} />

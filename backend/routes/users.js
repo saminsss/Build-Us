@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const pool = require("../components/db");
 const bcrypt = require("bcrypt");
-const { authenticateToken } = require("../components/auth");
+const { authenticateToken, authorizeRole } = require("../components/auth");
 
 const tableName = "USERS";
 
@@ -14,7 +14,7 @@ const deleteRoutes = ["/api/users/:id"];
 
 const users = (app) => {
 	//insert a user
-	app.post(insertRoutes, authenticateToken, async (req, res) => {
+	app.post(insertRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "INSERT INTO " + tableName + " ("
@@ -47,7 +47,7 @@ const users = (app) => {
 	});
 
 	//get users
-	app.get(selectRoutes, authenticateToken, async (req, res) => {
+	app.get(selectRoutes, authenticateToken, authorizeRole(['ADMIN', 'EMPLOYEE']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "SELECT * FROM " + tableName + " ";
@@ -78,7 +78,7 @@ const users = (app) => {
 
 
 	//update a user
-	app.put(updateRoutes, authenticateToken, async (req, res) => {
+	app.put(updateRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "UPDATE " + tableName + " SET ";
@@ -118,7 +118,7 @@ const users = (app) => {
 	});
 
 	//delete a user
-	app.delete(deleteRoutes, authenticateToken, async (req, res) => {
+	app.delete(deleteRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "DELETE FROM " + tableName + " ";

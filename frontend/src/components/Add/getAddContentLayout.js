@@ -12,7 +12,7 @@ import {
 const getAddContentLayout = (role, routename) => {
 	let list = [];
 
-	if (role == 'A') {
+	if (role == 'ADMIN') {
 		if (routename === 'customers') {
 			list = [
 				{

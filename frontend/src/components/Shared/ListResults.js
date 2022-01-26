@@ -44,13 +44,12 @@ const useStyles = makeStyles((theme) => {
 			marginLeft: theme.spacing(1.25)
 		},
 		actionCell: {
-			display: 'flex',
-			flexWrap: 'nowrap'
+			minWidth: theme.spacing(14),
 		},
 		actionButton: {
 			maxWidth: theme.spacing(1),
 			minWidth: theme.spacing(1),
-			marginRight: theme.spacing(0.25)
+			margin: theme.spacing(0.25)
 		}
 	}
 });
@@ -190,8 +189,8 @@ const ListResults = ({ routename = 'route', tabinfo, actions, data, ...rest }) =
 				{tabinfo.map((tab, tabindex) => (
 					<TabPanel key={tabindex} value={tabNo} index={tabindex}>
 						<TableContainer>
-							<Table>
-								<TableHead className={styles.table} stickyHeader>
+							<Table stickyHeader>
+								<TableHead className={styles.table}>
 									<TableRow>
 										<TableCell padding="checkbox">
 											<Checkbox
@@ -218,11 +217,12 @@ const ListResults = ({ routename = 'route', tabinfo, actions, data, ...rest }) =
 												</Box>
 											</TableCell>
 										))}
-										{actions && <TableCell>
-											<Box>
-												Actions
-											</Box>
-										</TableCell>}
+										{actions &&
+											<TableCell className={styles.actionCell}>
+												<Box>
+													Actions
+												</Box>
+											</TableCell>}
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -244,20 +244,20 @@ const ListResults = ({ routename = 'route', tabinfo, actions, data, ...rest }) =
 													{buildTableRowCells(rowitem, table.rowdatakeys, table.rowdataseparator)}
 												</TableCell>
 											))}
-											{actions && <TableCell className={styles.actionCell}>
-												{actions.map((action, index) => (
-													<Tooltip key={index} title={action.title}>
-														<Button
-															className={styles.actionButton}
-															variant='outlined'
-															onClick={() => history.push(`/${routename}/${action.path}`)}
-														>
-															{action.icon}
-														</Button>
-													</Tooltip>
-												))}
-											</TableCell>}
-
+											{actions &&
+												<TableCell>
+													{actions.map((action, index) => (
+														<Tooltip key={index} title={action.title}>
+															<Button
+																className={styles.actionButton}
+																variant='outlined'
+																onClick={() => history.push(`/${routename}/${action.path}`)}
+															>
+																{action.icon}
+															</Button>
+														</Tooltip>
+													))}
+												</TableCell>}
 										</TableRow>
 									))}
 								</TableBody>

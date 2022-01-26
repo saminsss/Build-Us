@@ -15,7 +15,6 @@ const EmployeeDashboard = (props) => (
 			height: '100vh',
 		}}
 	>
-		EmployeeDashboard
 		<Box sx={{
 			py: 3,
 		}}>
@@ -23,6 +22,8 @@ const EmployeeDashboard = (props) => (
 				pl: 3,
 				pr: 1
 			}}>
+
+				EmployeeDashboard
 				<Grid
 					container
 					spacing={2}

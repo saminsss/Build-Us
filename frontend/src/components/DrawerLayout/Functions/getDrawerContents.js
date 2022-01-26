@@ -8,7 +8,7 @@ import {
 
 const getDrawerContents = (user) => {
 	let list = [];
-	if (user?.role === 'A') {
+	if (user?.role === 'ADMIN') {
 		list = [
 			{
 				title: 'General',
@@ -65,7 +65,7 @@ const getDrawerContents = (user) => {
 			}
 		];
 	}
-	else if (user?.role === 'E') {
+	else if (user?.role === 'EMPLOYEE') {
 		list = [
 			{
 				title: 'Management',
@@ -90,7 +90,7 @@ const getDrawerContents = (user) => {
 			}
 		];
 	}
-	else if (user?.role === 'C') {
+	else if (user?.role === 'CUSTOMER') {
 		list = [
 			{
 				title: 'General',

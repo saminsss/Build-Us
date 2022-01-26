@@ -17,6 +17,7 @@ import NotFound from "./Screens/NotFound"
 
 import AdminRoute from "./components/Routes/AdminRoute";
 import EmployeeRoute from "./components/Routes/EmployeeRoute";
+import CustomerRoute from "./components/Routes/CustomerRoute"
 import DrawerLayout from "./components/App/DrawerLayout";
 import SimpleLayout from "./components/App/SimpleLayout";
 
@@ -60,9 +61,9 @@ const App = () => {
 						]}>
 						<DrawerLayout>
 							{/* Dashboard */}
-							<AdminRoute exact path="/dashboard" component={Dashboard} />
+							<CustomerRoute exact path="/dashboard" component={Dashboard} />
 
-							{/* Employeed */}
+							{/* Employees */}
 							<AdminRoute exact path={`/${employeeRouteName}`} routename={employeeRouteName} component={EmployeeList} />
 							<AdminRoute exact path={`/${employeeRouteName}/add`} routename={employeeRouteName} component={Add} />
 

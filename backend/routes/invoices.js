@@ -1,5 +1,5 @@
 const pool = require("../components/db");
-const { authenticateToken } = require("../components/auth");
+const { authenticateToken, authorizeRole } = require("../components/auth");
 
 const tableName = "INVOICES";
 
@@ -11,7 +11,7 @@ const deleteRoutes = ["/api/invoices/:id"];
 
 const invoices = (app) => {
 	//insert a invoice
-	app.post(insertRoutes, authenticateToken, async (req, res) => {
+	app.post(insertRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "INSERT INTO " + tableName + " ("
@@ -40,7 +40,7 @@ const invoices = (app) => {
 	});
 
 	//get invoices
-	app.get(selectRoutes, authenticateToken, async (req, res) => {
+	app.get(selectRoutes, authenticateToken, authorizeRole(['ADMIN']), authorizeRole('EMPLOYEE'), authorizeRole('CUSTOMER'), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "SELECT * FROM " + tableName + " ";
@@ -69,7 +69,7 @@ const invoices = (app) => {
 	});
 
 	//update an invoice
-	app.put(updateRoutes, authenticateToken, async (req, res) => {
+	app.put(updateRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "UPDATE " + tableName + " SET ";
@@ -105,7 +105,7 @@ const invoices = (app) => {
 	});
 
 	//delete an invoice
-	app.delete(deleteRoutes, authenticateToken, async (req, res) => {
+	app.delete(deleteRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "DELETE FROM " + tableName + " ";

@@ -19,12 +19,16 @@ const getNavBarContents = () => {
 							path: '/solutions/tutoring'
 						},
 						{
-							name: 'Agency',
-							path: '/solutions/agency'
+							name: 'Test Preparation',
+							path: '/solutions/prep'
 						},
 						{
-							name: 'Commerce',
-							path: '/solutions/commerce'
+							name: 'Driving Schools',
+							path: '/solutions/music'
+						},
+						{
+							name: 'Music Schools',
+							path: '/solutions/driving'
 						}
 					]
 			},

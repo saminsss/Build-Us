@@ -5,7 +5,7 @@ import {
 	useMediaQuery,
 	makeStyles
 } from '@material-ui/core'
-import getNavBarContents from '../SimpleLayout/getNavBarContents';
+import getNavBarContents from '../SimpleLayout/Functions/getNavBarContents';
 import AppNavBar from '../SimpleLayout/AppNavBar';
 
 const useStyles = makeStyles((theme) => {

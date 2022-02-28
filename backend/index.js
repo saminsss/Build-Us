@@ -14,6 +14,7 @@ require('./routes/customers')(app);
 require('./routes/employees')(app);
 require('./routes/invoices')(app);
 require('./routes/transactions')(app);
+require('./routes/reviews')(app);
 require('./components/auth').authenticate(app);
 
 //For production use

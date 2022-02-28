@@ -15,9 +15,7 @@ import Unauthorized from "./Screens/Unauthorized";
 import NotFound from "./Screens/NotFound"
 
 
-import AdminRoute from "./components/Routes/AdminRoute";
-import EmployeeRoute from "./components/Routes/EmployeeRoute";
-import CustomerRoute from "./components/Routes/CustomerRoute"
+import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import DrawerLayout from "./components/App/DrawerLayout";
 import SimpleLayout from "./components/App/SimpleLayout";
 
@@ -61,18 +59,41 @@ const App = () => {
 						]}>
 						<DrawerLayout>
 							{/* Dashboard */}
-							<CustomerRoute exact path="/dashboard" component={Dashboard} />
+							<ProtectedRoute
+								exact path="/dashboard"
+								component={Dashboard}
+								allowedroles={['ADMIN', 'EMPLOYEE', 'CUSTOMER']} />
 
 							{/* Employees */}
-							<AdminRoute exact path={`/${employeeRouteName}`} routename={employeeRouteName} component={EmployeeList} />
-							<AdminRoute exact path={`/${employeeRouteName}/add`} routename={employeeRouteName} component={Add} />
+							<ProtectedRoute
+								exact path={`/${employeeRouteName}`}
+								routename={employeeRouteName}
+								component={EmployeeList}
+								allowedroles={['ADMIN']} />
+							<ProtectedRoute
+								exact path={`/${employeeRouteName}/add`}
+								routename={employeeRouteName}
+								component={Add}
+								allowedroles={['ADMIN']} />
 
 							{/* Customers */}
-							<EmployeeRoute exact path={`/${customerRouteName}`} routename={customerRouteName} component={CustomerList} />
-							<EmployeeRoute exact path={`/${customerRouteName}/add`} routename={customerRouteName} component={Add} />
+							<ProtectedRoute
+								exact path={`/${customerRouteName}`}
+								routename={customerRouteName}
+								component={CustomerList}
+								allowedroles={['ADMIN', 'EMPLOYEE']} />
+							<ProtectedRoute
+								exact path={`/${customerRouteName}/add`}
+								routename={customerRouteName}
+								component={Add}
+								allowedroles={['ADMIN', 'EMPLOYEE']} />
 
 							{/* Invoices */}
-							<AdminRoute exact path={`/${invoiceRouteName}`} routename={invoiceRouteName} component={InvoiceList} />
+							<ProtectedRoute
+								exact path={`/${invoiceRouteName}`}
+								routename={invoiceRouteName}
+								component={InvoiceList}
+								allowedroles={['ADMIN', 'EMPLOYEE', 'CUSTOMER']} />
 						</DrawerLayout>
 					</Route>
 

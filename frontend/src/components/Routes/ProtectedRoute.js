@@ -5,37 +5,43 @@ import { Route, Redirect } from 'react-router';
 import Cookies from 'js-cookie'
 
 
-const AdminRoute = ({ component: Component, ...rest }) => {
+const ProtectedRoute = ({ component: Component, allowedroles = [], ...rest }) => {
 	const [id, setId] = useState();
 	const [role, setRole] = useState();
 	const [authenticated, setAuthenticated] = useState(false);
 
 	useEffect(() => {
+		const getRole = async () => {
+			try {
+				const Axios = axios.create();
+				Authentication.setAuthentication(Axios);
+
+				const id = Cookies.get('id');
+				const res = await Axios.get('/api/users/' + id,
+					{
+						params: { id: id }
+					}
+				);
+				setId(id);
+				const role = res.data[0]?.role;
+				setRole(role);
+
+				if (await Authentication.isAuthenticated() === true) {
+					setAuthenticated(true);
+				}
+			} catch (error) {
+				console.log(error)
+			}
+		};
+
 		getRole();
 	}, []);
-
-	const getRole = async () => {
-		const Axios = axios.create();
-		Authentication.setAuthentication(Axios);
-
-		const id = Cookies.get('id');
-		const res = await Axios.get('/api/users/' + id,
-			{
-				params: { id: id }
-			}
-		);
-		setId(() => (id));
-		const role = res.data[0]?.role;
-		setRole(() => (role));
-
-		if (Authentication.isAuthenticated()) setAuthenticated(true);
-	};
 
 	return authenticated && <Route
 		{...rest}
 		render={props => {
 			if (authenticated === true) {
-				if (role === 'ADMIN' || role === 'EMPLOYEE' || role === 'CUSTOMER') {
+				if (allowedroles.includes(role)) {
 					const Axios = axios.create();
 					Authentication.setAuthentication(Axios);
 					return <Component {...rest} id={id} role={role} axios={Axios} />
@@ -59,4 +65,4 @@ const AdminRoute = ({ component: Component, ...rest }) => {
 	/>
 }
 
-export default AdminRoute;
+export default ProtectedRoute;

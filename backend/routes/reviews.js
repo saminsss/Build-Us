@@ -1,20 +1,17 @@
-require("dotenv").config();
-
 const pool = require("../components/db");
-const bcrypt = require("bcrypt");
 const { authenticateToken, authorizeRole } = require("../components/auth");
 
-const tableName = "USERS";
+const tableName = "REVIEWS";
 
 //routes
-const insertRoutes = ["/api/users/:id"];
-const selectRoutes = ["/api/users/:id"];
-const updateRoutes = ["/api/users/:id"];
-const deleteRoutes = ["/api/users/:id"];
+const insertRoutes = ["/api/reviews/:id"];
+const selectRoutes = ["/api/reviews/"];
+const updateRoutes = ["/api/reviews/:id"];
+const deleteRoutes = ["/api/reviews/:id"];
 
-const users = (app) => {
-	//insert a user
-	app.post(insertRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
+const reviews = (app) => {
+	//insert a reviews
+	app.post(insertRoutes, authenticateToken, authorizeRole(['ADMIN', 'EMPLOYEE', 'CUSTOMER']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "INSERT INTO " + tableName + " ("
@@ -22,10 +19,6 @@ const users = (app) => {
 			let param = 1;
 			let sqlData = [];
 
-			if (req.body.password != null) {
-				const hashedPassword = await bcrypt.hash(req.body.password, 10);
-				req.body.password = hashedPassword;
-			}
 			let json = req.body;
 			for (key in json) {
 				sql += key.toUpperCase() + ", ";
@@ -38,27 +31,26 @@ const users = (app) => {
 			sql += "RETURNING *"
 
 			console.log(sql, sqlData);
-			const newuser = await pool.query(sql, sqlData);
-			res.json(newuser.rows);
+			const newCustomer = await pool.query(sql, sqlData);
+			res.json(newCustomer.rows);
 		} catch (error) {
 			console.log("JSON Data not correctly formatted");
 			res.json(error.message);
 		}
 	});
 
-	//get users
-	app.get(selectRoutes, authenticateToken, authorizeRole(['ADMIN', 'EMPLOYEE', 'CUSTOMER']), async (req, res) => {
-		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
+	//get reviews
+	app.get(selectRoutes, async (req, res) => {
 		try {
 			let sql = "SELECT * FROM " + tableName + " ";
 			let sqlData = [];
 			let param = 1;
 
-			const json = req.query;
+			let json = req.query;
 			if (Object.keys(json) != 0) {
 				let whereClause = "WHERE ";
 				for (key in json) {
-					if (!json[key] || key == "password") continue;
+					if (json[key] == null) continue;
 					whereClause += key.toUpperCase() + " = $" + param++ + " AND ";
 					sqlData.push(json[key]);
 				}
@@ -67,29 +59,23 @@ const users = (app) => {
 			}
 
 			console.log(sql, sqlData);
-			const users = await pool.query(sql, sqlData);
-
-			res.json(users.rows);
+			const reviews = await pool.query(sql, sqlData);
+			res.json(reviews.rows);
 		} catch (error) {
 			console.log("Route not correctly formatted");
 			res.json(error.message);
 		}
 	});
 
-
-	//update a user
-	app.put(updateRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
+	//update a reviews
+	app.put(updateRoutes, authenticateToken, authorizeRole(['ADMIN', 'EMPLOYEE', 'CUSTOMER']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
 			let sql = "UPDATE " + tableName + " SET ";
 			let sqlData = [];
 			let param = 1;
 
-			if (req.body.password != null) {
-				const hashedPassword = await bcrypt.hash(req.body.password, 10);
-				req.body.password = hashedPassword;
-			}
-			let json = req.body;
+			let json = req.query;
 			for (key in json) {
 				sql += key.toUpperCase() + " = $" + param++ + ", ";
 				sqlData.push(json[key])
@@ -100,7 +86,7 @@ const users = (app) => {
 			if (Object.keys(json) != 0) {
 				let whereClause = "WHERE ";
 				for (key in json) {
-					if (json[key] == null || key == "password") continue;
+					if (json[key] == null) continue;
 					whereClause += key.toUpperCase() + " = $" + param++ + " AND ";
 					sqlData.push(json[key]);
 				}
@@ -117,7 +103,7 @@ const users = (app) => {
 		}
 	});
 
-	//delete a user
+	//delete a reviews
 	app.delete(deleteRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
@@ -125,11 +111,11 @@ const users = (app) => {
 			let sqlData = [];
 			let param = 1;
 
-			let json = req.body;
+			let json = req.query;
 			let whereClause = "WHERE ";
 			if (Object.keys(json) != 0) {
 				for (key in json) {
-					if (json[key] == null || key == "password") continue;
+					if (json[key] == null) continue;
 					whereClause += key.toUpperCase() + " = $" + param++ + " AND ";
 					sqlData.push(json[key]);
 				}
@@ -138,8 +124,8 @@ const users = (app) => {
 			}
 
 			console.log(sql, sqlData);
-			const deleteuser = await pool.query(sql, sqlData);
-			res.json(deleteuser);
+			const deleteStudent = await pool.query(sql, sqlData);
+			res.json(deleteStudent);
 		} catch (error) {
 			console.log("Route not correctly formatted");
 			res.json(error.message);
@@ -147,4 +133,4 @@ const users = (app) => {
 	});
 }
 
-module.exports = users;
+module.exports = reviews;

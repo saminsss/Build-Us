@@ -44,7 +44,7 @@ function authorizeRole(roles) {
 			}
 		}
 
-		if (!roleVerified) return res.status(403).json({ msg: "error" });
+		if (roleVerified === false) return res.status(403).json({ msg: "error" });
 
 		next();
 	}
@@ -79,8 +79,13 @@ const authenticate = (app) => {
 			const id = { id: user.id };
 			const accessToken = generateAccessToken(id);
 			const refreshToken = generateRefreshToken(id);
-			//TODO add user id to auth table so token can be updated
-			const refreshRes = await authController.insertToken(refreshToken);
+
+			let refreshRes = {};
+
+			if ((await authController.confirmTokenExists(user.email)))
+				refreshRes = await authController.updateToken(user.email, refreshToken);
+			else
+				refreshRes = await authController.insertToken(user.email, refreshToken);
 
 			if (refreshRes.msg == "success") {
 				info.route = '/dashboard';

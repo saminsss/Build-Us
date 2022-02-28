@@ -1,14 +1,14 @@
 # Build-Us
  
-Web application to provide a SaaS platform for educational institutions to manage/grow their businesses.
+Web application to provide a SaaS platform for educational institutions to manage/grow their businesses. <br /><br />
 
 Provides features such as:
-	- Employee management
-	- Student management
-	- Invoicing
-	- Product management
-	- Reporting
-And more.
+	- Employee management <br />
+	- Student management <br />
+	- Invoicing <br />
+	- Product management <br />
+	- Reporting <br />
+And more.<br /><br />
 
 Deploying Backend to Heroku: 
 

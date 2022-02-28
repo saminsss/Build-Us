@@ -2,12 +2,12 @@
  
 Web application to provide a SaaS platform for educational institutions to manage/grow their businesses. <br /><br />
 
-Provides features such as:
-	- Employee management <br />
-	- Student management <br />
-	- Invoicing <br />
-	- Product management <br />
-	- Reporting <br />
+Provides features such as: <br />
+	* Employee management <br />
+	* Student management <br />
+	* Invoicing <br />
+	* Product management <br />
+	* Reporting <br />
 And more.<br /><br />
 
 Deploying Backend to Heroku: 

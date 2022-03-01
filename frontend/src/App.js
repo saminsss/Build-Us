@@ -25,7 +25,7 @@ import { ThemeProvider, createTheme } from "@material-ui/core";
 const theme = createTheme({
 	typography: {
 		fontFamily: [
-			'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Helvetica', 'Arial', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"'
+			'Roboto', 'Quicksand'
 		].join(','),
 	},
 	palette: {

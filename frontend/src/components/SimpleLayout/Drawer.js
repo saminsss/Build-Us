@@ -29,11 +29,16 @@ const useStyles = makeStyles((theme) => {
 			padding: theme.spacing(1),
 			width: '100%',
 		},
-		title: {
+		titleContainer: {
 			display: 'flex',
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			padding: theme.spacing(2)
+		},
+		title: {
+			fontFamily: 'Quicksand',
+			fontSize: 32,
+			fontWeight: 'bold',
 		},
 		closeButton: {
 			color: theme.palette.primary.main,
@@ -42,7 +47,7 @@ const useStyles = makeStyles((theme) => {
 	}
 });
 
-function AppDrawerBar({ drawerItems, setDrawerOpen, drawerOpen }) {
+function DrawerBar({ title, drawerItems, setDrawerOpen, drawerOpen }) {
 
 	const styles = useStyles();
 	const history = useHistory();
@@ -73,9 +78,9 @@ function AppDrawerBar({ drawerItems, setDrawerOpen, drawerOpen }) {
 			anchor='top'
 			onClose={() => setDrawerOpen(false)}
 		>
-			<Box className={styles.title}>
-				<Typography variant='h5'>
-					Drawer
+			<Box className={styles.titleContainer}>
+				<Typography className={styles.title}>
+					{title}
 				</Typography>
 				<Button className={styles.closeButton} onClick={() => setDrawerOpen(false)}>
 					<CloseOutlined />
@@ -121,4 +126,4 @@ function AppDrawerBar({ drawerItems, setDrawerOpen, drawerOpen }) {
 	)
 };
 
-export default AppDrawerBar;
+export default DrawerBar;

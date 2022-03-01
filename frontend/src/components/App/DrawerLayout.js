@@ -6,8 +6,8 @@ import {
 	useMediaQuery
 } from '@material-ui/core'
 
-import DrawerAppBar from '../DrawerLayout/DrawerAppBar';
-import DrawerNavBar from '../DrawerLayout/DrawerNavBar';
+import AppBar from '../DrawerLayout/AppBar';
+import Drawer from '../DrawerLayout/Drawer';
 import getDrawerContents from '../DrawerLayout/Functions/getDrawerContents';
 
 import axios from 'axios';
@@ -75,13 +75,14 @@ function DrawerLayout({ children }) {
 	return (
 		<Box className={styles.root}>
 			{user &&
-				<DrawerAppBar
+				<AppBar
 					user={user}
 					drawerWidth={drawerWidth}
 					setDrawerOpen={setDrawerOpen}
 				/>}
 			{user &&
-				<DrawerNavBar
+				<Drawer
+					title='Teachify'
 					list={getDrawerContents(user)}
 					drawerWidth={220}
 					drawerType={drawerType}

@@ -15,21 +15,28 @@ import {
 	ExpandMore,
 	MenuOutlined
 } from '@material-ui/icons';
-import MenuBox from './MenuBox';
-import AppDrawerBar from './AppDrawerBar';
+import MenuBox from './NavBarList';
+import Drawer from './Drawer';
 
 const useStyles = makeStyles((theme) => {
 	return {
 		appbar: {
 			display: 'flex',
-			alignItems: 'flex-end',
-			justifyContent: 'center',
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'space-between',
+			padding: theme.spacing(1),
 			backgroundColor: theme.palette.secondary.main,
 			color: theme.palette.primary.light
 		},
 		menuButton: {
 			color: theme.palette.primary.main,
 			minWidth: theme.spacing(1)
+		},
+		title: {
+			fontFamily: 'Quicksand',
+			fontSize: 32,
+			fontWeight: 'bold',
 		},
 		listitem: {
 			cursor: 'pointer',
@@ -39,7 +46,7 @@ const useStyles = makeStyles((theme) => {
 	}
 });
 
-function AppNavBar({ items, breakpointUp }) {
+function NavBar({ title, items, breakpointUp }) {
 	const styles = useStyles();
 
 	const history = useHistory();
@@ -59,32 +66,41 @@ function AppNavBar({ items, breakpointUp }) {
 				elevation={0}
 			>
 				<Toolbar>
+					<Typography className={styles.title}>{title}</Typography>
+				</Toolbar>
+				<Toolbar>
 					{breakpointUp &&
-						<List style={{
-							display: 'flex'
-						}}>
-							{items?.map((item, index) => (
-								<Box
-									key={index}
-									onMouseOver={() => item.subitems && handleHover(item.name, true)}
-									onMouseLeave={() => item.subitems && handleHover(item.name, false)}
-								>
-									<ListItem
-										className={styles.listitem}
-										onClick={() => history.push(item.path)}
-									>
-										<ListItemText>
-											<Typography variant='subtitle1'>
-												{item.name}
-											</Typography>
-										</ListItemText>
-										{item.subitems && <ExpandMore />}
-									</ListItem>
+						<Box>
+							<List style={{
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center'
+							}}>
 
-									{state[item.name] && <MenuBox items={item.subitems} />}
-								</Box>
-							))}
-						</List>
+								{items?.map((item, index) => (
+									<Box
+										key={index}
+										onMouseOver={() => item.subitems && handleHover(item.name, true)}
+										onMouseLeave={() => item.subitems && handleHover(item.name, false)}
+									>
+										<ListItem
+											className={styles.listitem}
+											onClick={() => history.push(item.path)}
+										>
+											<ListItemText>
+												<Typography variant='subtitle1'>
+													{item.name}
+												</Typography>
+											</ListItemText>
+											{item.subitems && <ExpandMore />}
+										</ListItem>
+
+										{state[item.name] && <MenuBox items={item.subitems} />}
+									</Box>
+								))}
+							</List>
+						</Box>
+
 					}
 					{!breakpointUp &&
 						<Button className={styles.menuButton} onClick={() => setDrawerOpen(true)}>
@@ -94,7 +110,8 @@ function AppNavBar({ items, breakpointUp }) {
 				</Toolbar>
 			</AppBar>
 			{!breakpointUp &&
-				<AppDrawerBar
+				<Drawer
+					title={title}
 					drawerItems={items}
 					drawerOpen={drawerOpen}
 					setDrawerOpen={setDrawerOpen}
@@ -104,4 +121,4 @@ function AppNavBar({ items, breakpointUp }) {
 	)
 }
 
-export default AppNavBar;
+export default NavBar;

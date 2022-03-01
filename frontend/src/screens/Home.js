@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import {
 	Box,
-	Grid,
-	Paper,
 	makeStyles,
-	Typography,
-	Button,
 } from '@material-ui/core';
-
-import { Grow } from '@material-ui/core';
-
-import { useHistory } from 'react-router';
 
 import Introduction from '../components/Home/Introduction';
 import Featured from '../components/Home/Featured';
 import Works from '../components/Home/Works';
-import Reviews from '../components/Home/Reviews'
+import Reviews from '../components/Home/Reviews';
+import Grow from '../components/Home/Grow';
+import Footer from '../components/Home/Footer';
 
 const useStyles = makeStyles((theme) => {
 	return {
@@ -44,6 +38,10 @@ const Home = () => {
 			<Works />
 
 			<Reviews />
+
+			<Grow />
+
+			<Footer />
 
 		</Box >
 	);

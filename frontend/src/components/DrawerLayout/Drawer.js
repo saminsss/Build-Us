@@ -8,7 +8,7 @@ import {
 
 import DrawerList from './DrawerList';
 
-function DrawerBar({ list, drawerWidth, drawerType, drawerAnchor, setDrawerOpen, drawerOpen }) {
+function DrawerBar({ title, list, drawerWidth, drawerType, drawerAnchor, setDrawerOpen, drawerOpen }) {
 	const useStyles = makeStyles((theme) => {
 		return {
 			drawer: {
@@ -20,11 +20,16 @@ function DrawerBar({ list, drawerWidth, drawerType, drawerAnchor, setDrawerOpen,
 				padding: theme.spacing(1),
 				width: drawerWidth,
 			},
-			title: {
+			titleContainer: {
 				display: 'flex',
 				justifyContent: 'space-between',
 				alignItems: 'center',
 				padding: theme.spacing(2)
+			},
+			title: {
+				fontFamily: 'Quicksand',
+				fontSize: 32,
+				fontWeight: 'bold',
 			},
 		}
 	});
@@ -40,9 +45,9 @@ function DrawerBar({ list, drawerWidth, drawerType, drawerAnchor, setDrawerOpen,
 			anchor={drawerAnchor}
 			onClose={() => setDrawerOpen(false)}
 		>
-			<Box className={styles.title}>
-				<Typography variant='h5'>
-					Drawer
+			<Box className={styles.titleContainer}>
+				<Typography className={styles.title}>
+					{title}
 				</Typography>
 			</Box>
 

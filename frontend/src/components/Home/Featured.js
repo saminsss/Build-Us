@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => {
 			paddingLeft: theme.spacing(5),
 			paddingRight: theme.spacing(5),
 		},
-		sectionSectionTitle: {
+		sectionMainTitle: {
 			fontSize: '20px',
 			fontWeight: 'bold',
 			fontFamily: 'Quicksand',
@@ -72,7 +72,7 @@ const Featured = () => {
 			<Box className={styles.sectionBackground}>
 				<Grid container spacing={2} className={styles.section}>
 					<Grid item xs={12}>
-						<Typography className={styles.sectionSectionTitle}>Our Features</Typography>
+						<Typography className={styles.sectionMainTitle}>Our Features</Typography>
 						<Typography className={styles.sectionTitle}>How Teachify Can Help Your Teaching Business</Typography>
 					</Grid>
 

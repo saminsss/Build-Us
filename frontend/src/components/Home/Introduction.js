@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => {
 			height: '100%',
 			display: 'flex',
 			flexDirection: 'column',
-			fontFamily: 'Quicksand',
 			overflow: 'hidden',
 		},
 		image: {
@@ -30,6 +29,7 @@ const useStyles = makeStyles((theme) => {
 		introBackground: {
 			minHeight: '93vh',
 			backgroundColor: '#54a3f1',
+			backgroundImage: 'url(https://uploads-ssl.webflow.com/601a133a769fa8f8d45d95ba/61856827909fb72472abfc6c_601da34bc4b63f405a9e97f1_bg-test2.svg)',
 			borderRadius: '0px 0px 1800px 0px',
 		},
 		intro: {
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => {
 		button: {
 			marginTop: theme.spacing(2),
 			marginBottom: theme.spacing(2),
-			padding: theme.spacing(3)
+			padding: theme.spacing(2.4)
 		},
 	}
 });

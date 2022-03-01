@@ -6,7 +6,7 @@ import {
 	makeStyles
 } from '@material-ui/core'
 import getNavBarContents from '../SimpleLayout/Functions/getNavBarContents';
-import AppNavBar from '../SimpleLayout/AppNavBar';
+import NavBar from '../SimpleLayout/NavBar';
 
 const useStyles = makeStyles((theme) => {
 	return {
@@ -31,7 +31,8 @@ function SimpleLayout({ children }) {
 
 	return (
 		<Box className={styles.root}>
-			<AppNavBar
+			<NavBar
+				title='Teachify'
 				items={list}
 				breakpointUp={isMdUp}
 			/>

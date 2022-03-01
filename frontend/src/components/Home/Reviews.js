@@ -13,7 +13,6 @@ import {
 import {
 	KeyboardArrowRightOutlined,
 	KeyboardArrowLeftOutlined,
-	RecordVoiceOverTwoTone
 } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => {
@@ -41,7 +40,7 @@ const useStyles = makeStyles((theme) => {
 		},
 		carouselContainer: {
 			width: '70%',
-			height: '220px',
+			height: '100%',
 			display: 'flex',
 			flexDirection: 'row',
 			justifyContent: 'space-between',
@@ -60,7 +59,8 @@ const useStyles = makeStyles((theme) => {
 			fontWeight: 'bold',
 			fontSize: 30,
 			textAlign: 'center',
-			marginBottom: theme.spacing(3)
+			marginBottom: theme.spacing(3),
+			textAlign: 'center',
 		},
 		carouselSubtext: {
 			fontFamily: 'Quicksand',
@@ -68,6 +68,12 @@ const useStyles = makeStyles((theme) => {
 			fontSize: 20,
 			color: '#32CD32',
 			marginBottom: theme.spacing(1),
+			textAlign: 'center',
+		},
+		carouselAdditionalText: {
+			fontFamily: 'Quicksand',
+			fontWeight: 'bold',
+			textAlign: 'center',
 		},
 		arrow: {
 			color: theme.palette.primary.main,
@@ -120,7 +126,7 @@ const Works = () => {
 		review &&
 		<Box className={styles.page}>
 			<Box className={styles.sectionTitle}>
-				More than 10,000 tutors and education companies rely on Teachify
+				More than 10 tutors and education companies rely on Teachify
 			</Box>
 			<Box ref={containerRef} className={styles.carouselContainer}>
 				<Button
@@ -134,7 +140,7 @@ const Works = () => {
 					<Box className={styles.carousel}>
 						<Typography className={styles.carouselText}>{review[reviewIndex]?.review}</Typography>
 						<Typography className={styles.carouselSubtext}>{review[reviewIndex]?.firstname} {review[reviewIndex]?.lastname}</Typography>
-						<Typography>{review[reviewIndex]?.company}</Typography>
+						<Typography className={styles.carouselAdditionalText}>{review[reviewIndex]?.company}</Typography>
 					</Box>
 				</Slide>
 				<Button

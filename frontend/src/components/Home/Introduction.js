@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => {
 			fontFamily: 'Quicksand',
 		},
 		serviceText: {
-			fontSize: '50px',
+			fontSize: '46px',
 			fontWeight: 'bold',
 			fontFamily: 'Quicksand',
 			color: theme.palette.secondary.main,
@@ -78,7 +78,7 @@ const Introduction = () => {
 	}, []);
 
 
-	const services = ['Tutoring Company', 'Test Preparation School', 'Driving School', 'Music School'];
+	const services = ['Tutoring Company', 'Test Prep School', 'Driving School', 'Music School'];
 
 	const changeServiceText = () => {
 		setServiceTextIndex((prev) => (prev + 1) % services.length);

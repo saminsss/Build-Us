@@ -7,62 +7,67 @@ import {
 	makeStyles,
 	Typography,
 	Button,
+	useTheme,
+	useMediaQuery
 } from '@material-ui/core';
 
 import { Grow } from '@material-ui/core';
 
 import { useHistory } from 'react-router';
 
-const useStyles = makeStyles((theme) => {
-	return {
-		page: {
-			width: '100%',
-			height: '100%',
-			display: 'flex',
-			flexDirection: 'column',
-			overflow: 'hidden',
-		},
-		image: {
-			backgroundColor: 'rgba(0,0,0,0)'
-		},
-
-		introBackground: {
-			minHeight: '93vh',
-			backgroundColor: '#54a3f1',
-			backgroundImage: 'url(https://uploads-ssl.webflow.com/601a133a769fa8f8d45d95ba/61856827909fb72472abfc6c_601da34bc4b63f405a9e97f1_bg-test2.svg)',
-			borderRadius: '0px 0px 1800px 0px',
-		},
-		intro: {
-			textAlign: 'center',
-			marginTop: theme.spacing(15),
-			paddingLeft: theme.spacing(1),
-			paddingRight: theme.spacing(1),
-		},
-		introText: {
-			fontSize: '38px',
-			fontWeight: 'bold',
-			fontFamily: 'Quicksand',
-			color: theme.palette.primary.main
-		},
-		descriptionText: {
-			fontFamily: 'Quicksand',
-		},
-		serviceText: {
-			fontSize: '32px',
-			fontWeight: 'bold',
-			fontFamily: 'Quicksand',
-			color: theme.palette.secondary.main,
-			marginBottom: theme.spacing(2),
-		},
-		button: {
-			marginTop: theme.spacing(2),
-			marginBottom: theme.spacing(2),
-			padding: theme.spacing(2.4)
-		},
-	}
-});
-
 const Introduction = () => {
+	const theme = useTheme();
+	const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
+	const useStyles = makeStyles((theme) => {
+		return {
+			page: {
+				width: '100%',
+				height: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+				overflow: 'hidden',
+			},
+			image: {
+				backgroundColor: 'rgba(0,0,0,0)'
+			},
+
+			introBackground: {
+				minHeight: '93vh',
+				backgroundColor: '#54a3f1',
+				backgroundImage: 'url(https://uploads-ssl.webflow.com/601a133a769fa8f8d45d95ba/61856827909fb72472abfc6c_601da34bc4b63f405a9e97f1_bg-test2.svg)',
+				borderRadius: '0px 0px 1800px 0px',
+			},
+			intro: {
+				textAlign: 'center',
+				marginTop: theme.spacing(15),
+				paddingLeft: theme.spacing(1),
+				paddingRight: theme.spacing(1),
+			},
+			introText: {
+				fontSize: isMdUp ? 34 : 28,
+				fontWeight: 'bold',
+				fontFamily: 'Quicksand',
+				color: theme.palette.primary.main
+			},
+			descriptionText: {
+				fontFamily: 'Quicksand',
+			},
+			serviceText: {
+				fontSize: isMdUp ? 50 : 30,
+				fontWeight: 'bold',
+				fontFamily: 'Quicksand',
+				color: theme.palette.secondary.main,
+				marginBottom: theme.spacing(2),
+			},
+			button: {
+				marginTop: theme.spacing(2),
+				marginBottom: theme.spacing(2),
+				padding: theme.spacing(2.4)
+			},
+		}
+	});
+
 	const styles = useStyles();
 
 	const [animation, setAnimation] = useState(true);
@@ -78,7 +83,7 @@ const Introduction = () => {
 	}, []);
 
 
-	const services = ['Tutoring Company', 'Test Preparation School', 'Driving School', 'Music School'];
+	const services = ['Tutoring Company', 'Test Prep Center', 'Driving School', 'Music School'];
 
 	const changeServiceText = () => {
 		setServiceTextIndex((prev) => (prev + 1) % services.length);

@@ -8,6 +8,8 @@ import {
 	makeStyles,
 	Typography,
 	Button,
+	useTheme,
+	useMediaQuery
 } from '@material-ui/core';
 
 import {
@@ -15,74 +17,77 @@ import {
 	KeyboardArrowLeftOutlined,
 } from '@material-ui/icons';
 
-const useStyles = makeStyles((theme) => {
-	return {
-		page: {
-			width: '100%',
-			height: '100%',
-			backgroundColor: '#f4f9ff',
-			marginTop: theme.spacing(6),
-			paddingTop: theme.spacing(12),
-			paddingBottom: theme.spacing(12),
-			display: 'flex',
-			flexDirection: 'column',
-			justifyContent: 'center',
-			alignItems: 'center',
-			fontFamily: 'Quicksand',
-			overflow: 'hidden',
-		},
-		sectionTitle: {
-			fontSize: '26px',
-			fontFamily: 'Quicksand',
-			textAlign: 'center',
-			color: theme.palette.secondary.main,
-			marginBottom: theme.spacing(1.5),
-		},
-		carouselContainer: {
-			width: '70%',
-			height: '100%',
-			display: 'flex',
-			flexDirection: 'row',
-			justifyContent: 'space-between',
-			alignItems: 'center',
-			marginTop: theme.spacing(6),
-			overflow: 'hidden'
-		},
-		carousel: {
-			display: 'flex',
-			flexDirection: 'column',
-			justifyContent: 'center',
-			alignItems: 'center',
-		},
-		carouselText: {
-			fontFamily: 'Quicksand',
-			fontWeight: 'bold',
-			fontSize: 30,
-			textAlign: 'center',
-			marginBottom: theme.spacing(3),
-			textAlign: 'center',
-		},
-		carouselSubtext: {
-			fontFamily: 'Quicksand',
-			fontWeight: 'bold',
-			fontSize: 20,
-			color: '#32CD32',
-			marginBottom: theme.spacing(1),
-			textAlign: 'center',
-		},
-		carouselAdditionalText: {
-			fontFamily: 'Quicksand',
-			fontWeight: 'bold',
-			textAlign: 'center',
-		},
-		arrow: {
-			color: theme.palette.primary.main,
-			backgroundColor: theme.palette.secondary.main
-		}
-	}
-});
-
 const Works = () => {
+	const theme = useTheme();
+	const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+
+	const useStyles = makeStyles((theme) => {
+		return {
+			page: {
+				width: '100%',
+				height: '100%',
+				backgroundColor: '#f4f9ff',
+				marginTop: theme.spacing(6),
+				paddingTop: theme.spacing(12),
+				paddingBottom: theme.spacing(12),
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'center',
+				alignItems: 'center',
+				fontFamily: 'Quicksand',
+				overflow: 'hidden',
+			},
+			sectionTitle: {
+				fontSize: '26px',
+				fontFamily: 'Quicksand',
+				textAlign: 'center',
+				color: theme.palette.secondary.main,
+				marginBottom: theme.spacing(1.5),
+			},
+			carouselContainer: {
+				width: isMdUp ? '70%' : '90%',
+				height: '100%',
+				display: 'flex',
+				flexDirection: 'row',
+				justifyContent: 'space-between',
+				alignItems: 'center',
+				marginTop: theme.spacing(6),
+				overflow: 'hidden'
+			},
+			carousel: {
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'center',
+				alignItems: 'center',
+			},
+			carouselText: {
+				fontFamily: 'Quicksand',
+				fontWeight: 'bold',
+				fontSize: isMdUp ? 30 : 20,
+				textAlign: 'center',
+				marginBottom: theme.spacing(3),
+				textAlign: 'center',
+			},
+			carouselSubtext: {
+				fontFamily: 'Quicksand',
+				fontWeight: 'bold',
+				fontSize: isMdUp ? 20 : 15,
+				color: '#32CD32',
+				marginBottom: theme.spacing(1),
+				textAlign: 'center',
+			},
+			carouselAdditionalText: {
+				fontFamily: 'Quicksand',
+				fontWeight: 'bold',
+				textAlign: 'center',
+			},
+			arrow: {
+				color: theme.palette.primary.main,
+				backgroundColor: theme.palette.secondary.main
+			}
+		}
+	});
+
 	const styles = useStyles();
 	const containerRef = useRef(null);
 	const [animation, setAnimation] = useState(true);

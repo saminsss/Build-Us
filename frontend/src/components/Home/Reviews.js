@@ -25,7 +25,7 @@ const Works = () => {
 		return {
 			page: {
 				width: '100%',
-				height: '100%',
+				height: '50vh',
 				backgroundColor: '#f4f9ff',
 				marginTop: theme.spacing(6),
 				paddingTop: theme.spacing(12),
@@ -45,14 +45,14 @@ const Works = () => {
 				marginBottom: theme.spacing(1.5),
 			},
 			carouselContainer: {
-				width: isMdUp ? '70%' : '90%',
-				height: '100%',
+				width: isMdUp ? '70%' : '95%',
+				minHeight: '220px',
+				maxHeight: '220px',
 				display: 'flex',
 				flexDirection: 'row',
 				justifyContent: 'space-between',
 				alignItems: 'center',
-				marginTop: theme.spacing(6),
-				overflow: 'hidden'
+				marginTop: theme.spacing(6)
 			},
 			carousel: {
 				display: 'flex',
@@ -112,7 +112,7 @@ const Works = () => {
 			setReviewIndex((prev) => prev === 0 ? review.length - 1 : (prev - 1) % review.length)
 			setDirection('right');
 			setAnimation(true);
-		}, 200);
+		}, 350);
 	}
 
 	const handleForwardClick = () => {
@@ -124,7 +124,7 @@ const Works = () => {
 			setReviewIndex((prev) => (prev + 1) % review.length);
 			setDirection('left');
 			setAnimation(true);
-		}, 200);
+		}, 350);
 	}
 
 	return (
@@ -143,7 +143,9 @@ const Works = () => {
 				</Button>
 				<Slide in={animation} direction={direction} container={containerRef.current}>
 					<Box className={styles.carousel}>
-						<Typography className={styles.carouselText}>{review[reviewIndex]?.review}</Typography>
+						<Typography className={styles.carouselText}>
+							{'"' + review[reviewIndex]?.review.slice(0, 110) + '..."'}
+						</Typography>
 						<Typography className={styles.carouselSubtext}>{review[reviewIndex]?.firstname} {review[reviewIndex]?.lastname}</Typography>
 						<Typography className={styles.carouselAdditionalText}>{review[reviewIndex]?.company}</Typography>
 					</Box>

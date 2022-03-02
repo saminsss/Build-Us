@@ -40,7 +40,7 @@ const Introduction = () => {
 			},
 			intro: {
 				textAlign: 'center',
-				marginTop: theme.spacing(15),
+				marginTop: theme.spacing(12),
 				paddingLeft: theme.spacing(1),
 				paddingRight: theme.spacing(1),
 			},

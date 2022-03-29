@@ -60,9 +60,10 @@ const authController = () => {
 	const deleteToken = async (token) => {
 		let res = {};
 		try {
-			let sql = "DELETE FROM " + authTableName + " WHERE TOKEN = $1";
+			let sql = "DELETE FROM " + authTableName + " WHERE TOKEN = $1 RETURNING *";
 			let sqlData = [token];
 			const returntoken = await pool.query(sql, sqlData);
+			res.email = returntoken.rows[0].email;
 			res.msg = "success";
 			return res;
 		} catch (error) {

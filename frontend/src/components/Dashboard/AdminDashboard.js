@@ -77,7 +77,7 @@ const AdminDashboard = (props) => {
 							md={8}
 							xs={12}
 						>
-							<Transactions />
+							{/* <Transactions {...props} /> */}
 						</Grid>
 					</Grid>
 				</Container>

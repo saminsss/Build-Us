@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => {
 function SimpleLayout({ children }) {
 	const styles = useStyles();
 	const theme = useTheme();
-	const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+	const breakpoint = useMediaQuery(theme.breakpoints.up("lg"));
 
 	const [list, setList] = useState([]);
 
@@ -34,7 +34,7 @@ function SimpleLayout({ children }) {
 			<NavBar
 				title='Teachify'
 				items={list}
-				breakpointUp={isMdUp}
+				breakpointUp={breakpoint}
 			/>
 			<Box className={styles.toolbar}></Box>
 			<Box>

@@ -10,7 +10,7 @@ const updateRoutes = ["/api/transactions/:id"];
 const deleteRoutes = ["/api/transactions/:id"];
 
 const transactions = (app) => {
-	//insert a customer
+	//insert a transactions
 	app.post(insertRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
@@ -68,7 +68,7 @@ const transactions = (app) => {
 		}
 	});
 
-	//update a customer
+	//update a transactions
 	app.put(updateRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {
@@ -104,7 +104,7 @@ const transactions = (app) => {
 		}
 	});
 
-	//delete a customer
+	//delete a transactions
 	app.delete(deleteRoutes, authenticateToken, authorizeRole(['ADMIN']), async (req, res) => {
 		if (req.id != req.params.id) return res.status(403).json({ msg: "error" });
 		try {

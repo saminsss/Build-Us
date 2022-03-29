@@ -1,5 +1,6 @@
 import {
-	Book,
+	AccountBalance,
+	CalendarToday,
 	Edit
 } from '@material-ui/icons';
 
@@ -55,8 +56,13 @@ const getTableInfo = () => {
 			path: 'edit'
 		},
 		{
-			title: 'Hours',
-			icon: <Book />,
+			title: 'Schedule',
+			icon: <CalendarToday />,
+			path: 'schedule'
+		},
+		{
+			title: 'Wages/Hours',
+			icon: <AccountBalance />,
 			path: 'hours'
 		},
 	]

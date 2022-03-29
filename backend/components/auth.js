@@ -169,7 +169,7 @@ const authenticate = (app) => {
 				const id = { id: user.id };
 				const newAccessToken = generateAccessToken(id);
 				const newRefreshToken = generateRefreshToken(id);
-				const refreshRes = await authController.insertToken(newRefreshToken);
+				const refreshRes = await authController.insertToken(deleted.email, newRefreshToken);
 
 				res.status(200).json({
 					accessToken: newAccessToken,

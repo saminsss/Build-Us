@@ -1,18 +1,18 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Home from "./Screens/Home";
-import Dashboard from "./Screens/Dashboard";
-import SignIn from "./Screens/SignIn";
-import SignUp from "./Screens/SignUp";
+import Home from "./screens/Home";
+import Dashboard from "./screens/Dashboard";
+import SignIn from "./screens/SignIn";
+import SignUp from "./screens/SignUp";
 
-import EmployeeList from "./Screens/Employee"
-import CustomerList from "./Screens/Customer";
+import EmployeeList from "./screens/Employee"
+import CustomerList from "./screens/Customer";
 
 import Add from "./components/Shared/Add";
 
-import InvoiceList from "./Screens/Invoice";
-import Unauthorized from "./Screens/Unauthorized";
-import NotFound from "./Screens/NotFound"
+import InvoiceList from "./screens/Invoice";
+import Unauthorized from "./screens/Unauthorized";
+import NotFound from "./screens/NotFound"
 
 
 import ProtectedRoute from "./components/Routes/ProtectedRoute";

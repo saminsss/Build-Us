@@ -62,7 +62,7 @@ const reviews = (app) => {
 			const reviews = await pool.query(sql, sqlData);
 			res.json(reviews.rows);
 		} catch (error) {
-			console.log("Route not correctly formatted");
+			console.log("Route not correctly formatted", error);
 			res.json(error.message);
 		}
 	});

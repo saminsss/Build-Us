@@ -1,26 +1,26 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Home from "./screens/Home";
-import Dashboard from "./screens/Dashboard";
-import SignIn from "./screens/SignIn";
-import SignUp from "./screens/SignUp";
+import Dashboard from "./Screens/Dashboard";
+import Home from "./Screens/Home";
+import SignIn from "./Screens/SignIn";
+import SignUp from "./Screens/SignUp";
 
-import EmployeeList from "./screens/Employee"
-import CustomerList from "./screens/Customer";
+import CustomerList from "./Screens/Customer";
+import EmployeeList from "./Screens/Employee";
 
 import Add from "./components/Shared/Add";
 
-import InvoiceList from "./screens/Invoice";
-import Unauthorized from "./screens/Unauthorized";
-import NotFound from "./screens/NotFound"
+import InvoiceList from "./Screens/Invoice";
+import NotFound from "./Screens/NotFound";
+import Unauthorized from "./Screens/Unauthorized";
 
 
-import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import DrawerLayout from "./components/App/DrawerLayout";
 import SimpleLayout from "./components/App/SimpleLayout";
+import ProtectedRoute from "./components/Routes/ProtectedRoute";
 
 
-import { ThemeProvider, createTheme } from "@material-ui/core";
+import { createTheme, ThemeProvider } from "@material-ui/core";
 
 const theme = createTheme({
 	typography: {
